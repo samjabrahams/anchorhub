@@ -108,10 +108,10 @@ else:
 
 # Root directory for search
 # Default to '.'
-IN_DIR = end_string_in_char('../test/in', separator)
+IN_DIR = end_string_in_char('.', separator)
 
 # Output directory
-OUT_DIR = end_string_in_char('../test/out', separator)
+OUT_DIR = end_string_in_char('./anchorhub-out', separator)
 
 print "Root input directory: \t", IN_DIR
 print "Outputting to: \t\t", OUT_DIR + "\r\n"
@@ -139,7 +139,18 @@ OVERWRITE = False
 # Get list of Markdown files in root directory and all subdirectories
 file_paths = []
 for root, _, _ in os.walk(IN_DIR):
-    file_paths += glob.glob(root + separator + '*.md')
+    file_paths+= glob.glob(root + separator + '*.md')
+
+# Make sure that Markdown files within the OUT_DIR are not modified
+paths_to_remove = []
+
+for file_path in file_paths:
+    if os.path.commonprefix([file_path, OUT_DIR]) is OUT_DIR:
+        paths_to_remove.append(file_path)
+
+for path in paths_to_remove:
+    file_paths.remove(path)
+
 
 # Check in with user
 print "Configuring the following Markdown files:"
@@ -346,7 +357,8 @@ for file_path in file_paths:
                     # Path to linked Markdown file, relative to current document
                     link_relative_path = link_text[:hash_index]
                     
-                    link_key = os.path.relpath(IN_DIR + link_relative_path, IN_DIR)
+                    # The key for the referenced file in the headers dictionary, if such a key has been made
+                    link_key = os.path.relpath(IN_DIR + os.path.dirname(file_path) + separator + link_relative_path, IN_DIR)
                     
                     if link_key in headers and anchor in headers[link_key]:
                         # The anchor has been identified in {#anchor} notation before
