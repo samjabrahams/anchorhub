@@ -112,10 +112,9 @@ dir/file2.md
 
 * Support for reference-style Markdown links
 * Command line argument support
-* Make it `pip install` ready
 * Verify cross-platform compatibility (currently only tested on OSX)
 * Proper exception handling
-* Python 3 support
+* Support for ReStructuredText
 * Support for arbitrary generated anchor styles (not just GitHub-style)
 * Clean, refactor, reorganize
 * More tests!
