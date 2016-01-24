@@ -119,15 +119,15 @@ def main(argv=None):
     # ## Define regex patterns
 
     # Regex for start/stop wrapper pattern
-    wrapper_pattern = re.escape(OPEN) + r"\s*#((?!" + re.escape(OPEN) + r")(?!" + re.escape(CLOSE) +").)+\s*" + re.escape(CLOSE)
+    wrapper_pattern = re.escape(OPEN) + r"\s*#((?!" + re.escape(OPEN) + r")(?!" + re.escape(CLOSE) +")\S)+\s*" + re.escape(CLOSE)
     # Regex for marked header
     header_pattern = "^#+ .+" + wrapper_pattern + "\s*$"
 
     # Regex for local anchor links
-    local_anchor_link_pattern = r"\]\(#[^\)]+\)"
+    local_anchor_link_pattern = r"\[.+\]\(#[^\)]+\)"
 
     # Regex for external anchor links
-    external_anchor_link_pattern = r"\]\([^\)]+\.md#[^\)]+\)"
+    external_anchor_link_pattern = r"\[.+\]\([^\)]+\.md#[^\)]+\)"
 
     # Regex for code-block demarcation
     code_block_start_pattern = r"^```"
@@ -226,7 +226,6 @@ def main(argv=None):
         # Print out instructions to the user to remove duplicates and exit
         ahf.print_duplicate_header_information(duplicate_headers)
 
-
     ##
     ## Step 4: Remove {#anchor} syntax and replace all relevent anchors with GitHub-style anchors
     ##
@@ -296,14 +295,14 @@ def main(argv=None):
                     open_brace_index = replacement_line.rfind(OPEN)
                     
                     # Use everything except for the {#anchor} tag
-                    replacement_line = replacement_line[:open_brace_index] + "\r\n"
+                    replacement_line = replacement_line[:open_brace_index - 1] + "\r\n"
 
                     # Increment header modified count
                     modified_counts[0] += 1
                     
                 if has_local_anchor_link:                
                     # Line has at least one local anchor link
-                    
+
                     # Holder for incremental changes to replacement_line
                     # replacement_line will be replaced by this at the end of this section 
                     changed_line = ""
@@ -316,17 +315,22 @@ def main(argv=None):
                     
                     for link in links:
                         # Check each local header link and change if necessary
-                        
+
                         link_start_index = link[0]
                         link_end_index = link[1]
                         
+                        # Index of the '](#' characters in the link
+                        url_begin = replacement_line[link_start_index:link_end_index].find('](#')
+
                         # Extract #anchor text
-                        anchor = replacement_line[link_start_index + 3 : link_end_index - 1]
+                        anchor = replacement_line[link_start_index + url_begin + 3 : link_end_index - 1]
+
+                        print(anchor)
                         
                         if anchor in headers[file_key]:
                             # The anchor has been identified in {#anchor} notation before
                             # Replace the link with the corresponding GitHub style anchor
-                            changed_line += replacement_line[last_index : link_start_index] + "](#" + headers[file_key][anchor] + ")"
+                            changed_line += replacement_line[last_index : link_start_index + url_begin] + "](#" + headers[file_key][anchor] + ")"
 
                             # Increment local links modified count
                             modified_counts[1] += 1
@@ -361,11 +365,19 @@ def main(argv=None):
                         # Start/end index of link text inside of replacement_line
                         link_start_index = link[0]
                         link_end_index = link[1]
-                        
+
+                        # Regex match object for ]( (with no escaping backslash preceding it)
+                        braces_match = re.search(r"[^\\]\]\(",replacement_line[link_start_index:link_end_index], flags=re.UNICODE)
+                        # Index of where the link ends ](
+                        braces_index = braces_match.end()
+
                         # The url of the link, with braces and parentheses removed
                         # link_start_index+2 to cut off '](' characters
                         # link_end_index-1 to cut off ')' character
-                        link_text = replacement_line[link_start_index + 2:link_end_index - 1]
+                        link_text = replacement_line[link_start_index + braces_index:link_end_index - 1]
+
+                        print(braces_index)
+                        print(link_text)
 
                         # Sanity check: Make sure that the link doesn't go to an absolute path
                         if os.path.isabs(link_text):
@@ -376,7 +388,7 @@ def main(argv=None):
                         hash_index = link_text.rfind('.md#') + 3
                         
                         # Index of the hash/pound sign, relative to the whole replacement_line
-                        abs_hash_index = hash_index + link_start_index + 2
+                        abs_hash_index = hash_index + link_start_index + braces_index
                         
                         # Anchor text
                         anchor = link_text[hash_index + 1:]
@@ -387,6 +399,8 @@ def main(argv=None):
                         # The key for the referenced file in the headers dictionary, if such a key has been made
                         link_key = os.path.relpath(IN_DIR + os.path.dirname(file_path) + separator + link_relative_path, IN_DIR)
                         
+                        print(link_key)
+
                         if link_key in headers and anchor in headers[link_key]:
                             # The anchor has been identified in {#anchor} notation before
                             # Replace the link with the corresponding GitHub style anchor
