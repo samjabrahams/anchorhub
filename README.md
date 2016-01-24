@@ -72,7 +72,7 @@ Write links to your specified anchors as if you had created an HTML element with
 In the middle of this sentence, I'd like to link back to [the header specified above](#head)
 ```
 
-AnchorHub automatically automatically works for all files within a directory tree, so if you had a file named 'other.md' with '#ref' defined as an anchor, you can link to it from your original file without any additional finagling:
+AnchorHub automatically automatically works for all files within a directory tree, so if you had a file named 'other.md' with '#ref' defined as an anchor, you can link to it from your original file without any additional effort:
 
 ```markdown
 Let's link to that [other file's anchor!](other.md#ref)
