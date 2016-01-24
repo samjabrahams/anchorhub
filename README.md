@@ -1,4 +1,4 @@
-![AnchorHub graphic](http://cdn.rawgit.com/samjabrahams/anchorhub/master/img/graphic.svg)
+![AnchorHub graphic](img/graphic.png)
 
 # AnchorHub 
 
