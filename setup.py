@@ -21,7 +21,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.0.1',
+    version='0.2',
 
     description='Easily utilize GitHub\'s automatically generated anchors within and across Markdown documents',
     long_description=long_description,
@@ -38,11 +38,6 @@ setup(
 
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
-        # How mature is this project? Common values are
-        #   3 - Alpha
-        #   4 - Beta
-        #   5 - Production/Stable
-        'Development Status :: 3 - Alpha',
 
         # Indicate who your project is intended for
         'Intended Audience :: Developers',
@@ -98,7 +93,7 @@ setup(
     # pip to create the appropriate form of executable for the target platform.
     entry_points={
         'console_scripts': [
-            'anchorhub=anchorhub.anchorhub:main'
+            'anchorhub=anchorhub.main:main'
         ]
     },
 )

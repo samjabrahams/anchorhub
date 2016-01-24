@@ -1,10 +1,10 @@
 ![AnchorHub graphic](http://cdn.rawgit.com/samjabrahams/anchorhub/master/img/graphic.svg)
 
-# AnchorHub 
+# AnchorHub {#top}
 
 **AnchorHub** is a command-line tool that makes it easy and intuitive to utilize GitHub's auto-generated anchor tags in your [Markdown](https://daringfireball.net/projects/markdown/) documents, allowing you to create rich, user-friendly documentation in your GitHub repos without having to figure out what those auto-generated tags will be.
 
-## Features 
+## Features {#features}
 
 * Easily link to sections of Markdown documents on GitHub
 * Simple, customizable syntax that just works
@@ -16,7 +16,7 @@
 
 ---
 
-## Installation 
+## Installation {#install}
 
 You can install AnchorHub using [pip](https://pip.pypa.io/en/stable/installing/):
 
@@ -24,7 +24,7 @@ You can install AnchorHub using [pip](https://pip.pypa.io/en/stable/installing/)
 $ pip install anchorhub
 ```
 
-## Quick Start Guide 
+## Quick Start Guide {#quick}
 
 Inside your Markdown files, define and use header anchors like the following:
 
@@ -46,15 +46,15 @@ This will output your processed files in a new folder in your current directory,
 [This link points to that header!](#this-is-a-header-that-i-would-like-to-make-an-id-for)
 ```
 
-# Using AnchorHub 
+# Using AnchorHub {#use}
 
 This section goes over how to write your Markdown files in order to utilize AnchorHub, as well as how to use the command-line interface to AnchorHub.
 
-1. [Defining anchors on header lines](#defining-anchors)
-2. [Using those anchors in links](#link-syntax)
-3. [Processing files with the `anchorhub` command line interface](#anchorhubs-command-line-interface)
+1. [Defining anchors on header lines](#headers)
+2. [Using those anchors in links](#links)
+3. [Processing files with the `anchorhub` command line interface](#cli)
 
-## Defining Anchors 
+## Defining Anchors {#headers}
 
 Place identifiers with a leading '#' inside of `{ }` wrappers at end of header lines you'd like to reference. For example:
 
@@ -64,7 +64,7 @@ Place identifiers with a leading '#' inside of `{ }` wrappers at end of header l
 
 _Note: You can specify your own style of wrappers if `{ }` braces don't suit your needs. [See below]() for an example._
 
-## Link Syntax 
+## Link Syntax {#links}
 
 Write links to your specified anchors as if you had created an HTML element with an `id` or `name` parameter:
 
@@ -80,15 +80,15 @@ Let's link to that [other file's anchor!](other.md#ref)
 
 _Note: Make sure you use AnchorHub on the highest-level directory that you'd like to process. AnchorHub will search in all sub-directories of the input directory, but it will never step backwards. [See below]() for details._
 
-## AnchorHub's Command Line Interface 
+## AnchorHub's Command Line Interface {#cli}
 
-### Usage 
+### Usage {#usage}
 
 ```shell
 anchorhub [-h] [-v] [-X] [-e EXTENSIONS [EXTENSIONS ...]] [-w WRAPPER] input [output]
 ```
 
-### Input 
+### Input {#input}
 
 The only required argument to `anchorhub` is the desired input root. AnchorHub will walk through all subdirectories within the input and process all Markdown files it finds.
 
@@ -96,7 +96,7 @@ The only required argument to `anchorhub` is the desired input root. AnchorHub w
 $ anchorhub path/to/my/input
 ```
 
-### Output 
+### Output {#output}
 
 The second argument, if provided, specifies the desired output directory. By default, AnchorHub will output to `anchorhub-out` within the present working directory. Regardless of where the output is located, the structure of the output directory will match that of the input directory.
 
@@ -105,7 +105,7 @@ $ anchorhub input path/to/my/output
 ```
 
 
-### Options 
+### Options {#options}
 
 **-h / --help:** Display the terminal help prompt for `anchorhub`
 
@@ -141,11 +141,11 @@ The default value is `"{ }"`. Make sure you have a space between your opening an
 $ anchorhub ./input -w "[--> <--]"
 ```
 
-# Additional Info 
+# Additional Info {#info}
 
-## Examples 
+## Examples {#examples}
 
-### Single file 
+### Single file {#single-file-example}
 
 #### Input
 ```markdown
@@ -178,7 +178,7 @@ Skip to features header with [this link!](#here-is-my-feature-list).
 [Link back to the top!](#this-is-the-top-of-my-document)
 ```
 
-### Multi-file 
+### Multi-file {#multi-file-example}
 
 AnchorHub automatically looks at the entire directory tree when checking for anchor matches, so you can link to other documents in the same fashion. Each file has its own distinct set of anchors, so you can reuse the same tags on different pages. Here's a super simple demonstration below:
 
@@ -214,7 +214,7 @@ dir/file2.md
 [Link back to file1.md](../file1.md#some-header-for-this-file)
 ```
 
-## To-do List 
+## To-do List {#todos}
 
 * Support for reference-style Markdown links
 * Command line argument support
@@ -225,11 +225,11 @@ dir/file2.md
 * Clean, refactor, reorganize
 * More tests!
 
-## Known Issues 
+## Known Issues {#bugs}
 
 * Should not change text within in-line code (those marked by \` backticks)
 
-## License 
+## License {#license}
 
 ```
 Copyright 2016, Sam Abrahams. All rights reserved.
@@ -247,4 +247,4 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-[Back to top](#anchorhub)
+[Back to top](#top)

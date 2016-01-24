@@ -13,151 +13,105 @@
 #    limitations under the License.
 # ==============================================================================
 
-def main():
+def main(argv=None):
 
     ##
-    ## Step 0: Import required modules and define required functions
+    ## Import required modules and variables
     ##
+    # Global modules
     import re
     import sys
     import os
     import glob
+    import argparse
 
-    # ## Define functions
-
-    # Given a string path to a file, returns the file name plus extension
-    def get_file_name_from_path(path):
-    	return path[path.rfind('/') + 1:]
-
-    # Given a directory path, returns the path string, making sure it ends with a forward slash '/'
-    def end_string_in_char(string, char):    
-        if len(char) != 1:
-            # Should throw some sort of error
-            return string    
-        if string[-1] != char:
-            return string + char
-        else:
-            return string
-
-    def strip_relative_directories(path):
-    	index = path.rfind('./')
-    	return path[index+2:]
-
-    def esc_special_chars(word):
-        out = ""
-        for letter in word:
-            if not re.match(r"\w", word):
-                # Letter is a special character
-                out += "\\" + letter
-            else:
-                # Letter is alphanumeric
-                out += letter
-        return out
-
-    def write_to_file(path, text):
-        # Open file with read capabilties
-        f = open(path, 'w')
-                
-        # Write text to file
-        f.write(text)
-                
-        # Close the file
-        f.close()
-
-    # Creates a new anchor link, constructed from the original text
-    # A header with the form "   This is my Cool Header!!" creates
-    # the anchor "#this-is-my-cool-header"
-    # arg: header - Header string to be converted to an anchor
-    # arg: existingHeaders - a list of anchors that is used to check
-    #		the newly constructed anchor. If an existing anchor matches, a
-    #		number (starting from 1) is concatenated to the end and it checks
-    #		for uniqueness again. This repeats with incrementing numbers until a
-    #		unique anchor tag is found
-    def create_anchor_from_header(header, existing_anchors=None, max_repeat=100):
-        # Strip white space on the left/right and make lower case
-        out = header.strip().lower()
-
-        # Replace groups of white space with hyphens
-        out = re.sub(r"\s+", lambda x: "-", out, flags=re.UNICODE)
-
-        # Remove characters that aren't alphanumeric, hyphens, or spaces
-        out = re.sub(r"[^\w\- ]+", lambda x: "", out, flags=re.UNICODE)
-
-        if existing_anchors:
-            if out in existing_anchors:
-                i = 1
-                while (out + "-" + str(i)) in existing_anchors and i <= max_repeat:
-                    i +=  1
-                    
-                if i <= max_repeat:
-                    return out + "-" + str(i)
-                else:
-                    # Throw some error
-                    print("Stop using the same header over and over again!!")
-        
-        return out
+    # AnchorHub modules
+    import anchor_functions as ahf
+    from anchor_variables import separator, output_default, wrapper_default
 
     ##
-    ## Step 1: Define input/output directories, as well as #header indicators and overwrite flag
+    ## Step 0: Parse command line arguments
+    ##
+    if argv is None:
+        argv = sys.argv
+
+    parser = argparse.ArgumentParser(version="0.2", description="anchorhub parses through Markdown files and precompiles links to specially formatted anchors")
+
+    parser.add_argument("input", help="Path of directory tree to be parsed")
+    parser.add_argument("output", nargs='?', default=output_default, help="Desired output location (default is \"" + output_default + "\")")
+    parser.add_argument("-X", "--overwrite", help="Overwrite input files, ignore output location", action="store_true")
+    parser.add_argument("-e", "--extension", nargs="+", help="Indicate which file extensions to search and run anchorhub on.", default=[".md"])
+    parser.add_argument("-w", "--wrapper", default=wrapper_default, help="Specify custom wrapper format (default is \"{ }\")")
+
+    args = vars(parser.parse_args())
+
+    ##
+    ## Step 1: Define input/output directories, as well as #header wrapper and overwrite flag
     ##
 
-    # Define the directory separators for either Unix or Windows systems
-    if os.name == 'nt':
-        separator = '\\'
-    else:
-        separator = '/'
-
-    # Root directory for search
-    # Default to '.'
-    IN_DIR = end_string_in_char('.', separator)
+    # Root directory for parsing
+    IN_DIR = ahf.end_string_in_char(args['input'], separator)
 
     # Output directory
-    OUT_DIR = end_string_in_char('./anchorhub-out', separator)
-
-    print("Root input directory: \t" + IN_DIR)
-    print("Outputting to: \t\t" + OUT_DIR + "\r\n")
+    OUT_DIR = ahf.end_string_in_char(args['output'], separator)
 
     # Demarcation for start/stop of #header notation
-    # Default to {} braces
-    BOTH = '{ }'
-    BOTH_LIST = BOTH.split()
+    # Default to { } braces
+    WRAPPER = args['wrapper']
+    WRAPPER_LIST = WRAPPER.split()
 
     # Sanity check that there are exactly two patterns given to identify headers 
-    if len(BOTH_LIST) != 2:
-        print("Header demarcation must be of the form \r\n\t'{startpattern} {stoppattern}'")
+    if len(WRAPPER_LIST) != 2:
+        print("Error: Header demarcation must be of the form \r\n\t'{startpattern} {stoppattern}'")
         print("(Note the space between the two patterns)")
         sys.exit()
-        
-    OPEN = BOTH_LIST[0]
-    CLOSE = BOTH_LIST[1]
+       
+    OPEN = WRAPPER_LIST[0]
+    CLOSE = WRAPPER_LIST[1]
 
-    OVERWRITE = False
+    # Flag to say whether this program should overwrite the existing files instead of outputting to a different locations
+    OVERWRITE = args['overwrite']
+
+    # File extensions that the program will search for and perform processing on
+    EXTENSIONS = args['extension']
+
+    # Make sure that an empty string isn't specified as an extension type
+    if "" in EXTENSIONS:
+        print("ERROR: An empty string is not a valid extension.")
+        sys.exit()
+
+    # Make sure that the user hasn't specified the same input and output directories without using the overwrite flag
+    if (os.path.abspath(IN_DIR) == os.path.abspath(OUT_DIR)) and not OVERWRITE:
+        # User specified the same output directory as input directory, which would overwrite files!
+        # We won't do that without them giving us the overwrite flag
+        # Let's give the user a warnng and a suggestion
+        print("WARNING: Input and output directories are the same, but --overwrite flag is not provided.\r\n")
+        print("Do you want to overwrite your input files? If so, use the following command:")
+        print("\tanchorhub -X " + args['input'])
+        sys.exit()
+
+    # Confirm the directories that will be processed 
+    print("Root input directory: \t" + IN_DIR)
+    print("Outputting to: \t\t" + OUT_DIR + "\r\n")
 
     ##
     ## Step 2: Find all file paths for Markdown files in subdirectories
     ##
 
     # Get list of Markdown files in root directory and all subdirectories
-    file_paths = []
-    for root, _, _ in os.walk(IN_DIR):
-        file_paths+= glob.glob(root + separator + '*.md')
+    file_paths = ahf.list_all_files_in_directory_with_extensions(IN_DIR, EXTENSIONS, exclude=OUT_DIR)
 
-    # Make sure that Markdown files within the OUT_DIR are not modified
-    paths_to_remove = []
+    if len(file_paths) < 1:
+        # Didn't find any files to process
+        print("No files found with [" + ', '.join(EXTENSIONS) + "] extension" + ("s" if len(EXTENSIONS) > 1 else "") + " in " + IN_DIR + " or any of its subdirectories.")
+        sys.exit()
 
-    for file_path in file_paths:
-        if os.path.commonprefix([file_path, OUT_DIR]) is OUT_DIR:
-            paths_to_remove.append(file_path)
-
-    for path in paths_to_remove:
-        file_paths.remove(path)
-
-
-    # Check in with user
-    print("Configuring the following Markdown files:")
+    # Check in with user about which files are going to be processed
+    print("Configuring the following files:")
     for fl in file_paths:
-        print("  " + fl + "\r\n")
-
+        print("  " + fl)
+    print("")
+    
     ##
     ## Step 3: Find all marked headers in the files
     ##
@@ -175,14 +129,17 @@ def main():
     # Regex for external anchor links
     external_anchor_link_pattern = r"\]\([^\)]+\.md#[^\)]+\)"
 
+    # Regex for code-block demarcation
+    code_block_start_pattern = r"^```"
+    code_block_end_pattern = r"^```\s*$"
+
     header_regex = re.compile(header_pattern, re.UNICODE)
     wrapper_regex = re.compile(wrapper_pattern, re.UNICODE)
     local_regex = re.compile(local_anchor_link_pattern, re.UNICODE)
     external_regex = re.compile(external_anchor_link_pattern, re.UNICODE)
 
-    def find_last_match(regexObj, string):
-        matches = regexObj.findall(string)
-        return matches[len(matches) - 1]
+    code_start_regex = re.compile(code_block_start_pattern, re.UNICODE)
+    code_end_regex = re.compile(code_block_end_pattern, re.UNICODE)
 
     # Storage for all header dictionary
     # Stores sub-dictionaries for each file
@@ -191,16 +148,37 @@ def main():
     # Count for headers, local links, and external links modified
     modified_counts = [0,0,0]
 
+    ###
+    ### FIRST PASS THROUGH THE FILES
+    ### FIND ALL OF THE HEADERS THAT USE THE SPECIFIED WRAPPER SYNTAX
+    ###
+
+    # Dictionary to hold duplicate header values, if any
+    # If any are found after the pass, we will exit the program and let the user know where the duplicates are
+    duplicate_headers = {}
+
     for file_path in file_paths:
         # Local file headers to be placed in the global headers dict
         file_headers = {}
         
         # Open the file with read capabilities
         f = open(file_path, 'r')
+
+        # Boolean flag that keeps track of whether or not a ``` style code block is currently open
+        in_code_block = False
         
         # Go through each line in the file
-        for line in f:
-            if header_regex.search(line):
+        for line_number, line in enumerate(f, 1):
+
+            # Flag to make sure we don't flip twice on the same line
+            already_switched = False
+
+            if (code_start_regex.search(line) and not in_code_block):
+                # This line represents the start of a ``` code block
+                in_code_block = True
+                already_switched = True
+
+            if header_regex.search(line) and not in_code_block:
                 # Line has '# Header {#id}' format
                 
                 # Index of the start of the header, after '#' characters
@@ -211,10 +189,25 @@ def main():
                 end_id_index = line.rfind(CLOSE)
                 
                 header_id = line[start_id_index + len(OPEN) + 1:end_id_index]
-                header_anchor = create_anchor_from_header(line[start_index:start_id_index], file_headers.values())
+                header_anchor = ahf.create_anchor_from_header(line[start_index:start_id_index], file_headers.values())
                 
+                # Check to make sure that the id hasn't been used already
+                if header_id in file_headers:
+                    # The id has already been used- instruct user to modify their code.
+                    print("ERROR: Duplicate anchor tags used.\r\n")
+                    print("File: " + file_path + " line " + line_number)
+                    print("The anchor tag " + header_id + " was already used for the previous header " + file_headers[header_id])
+                    print("\r\nPlease modify your code to remove duplicates")
+                    if not duplicate_headers[file_path]:
+                        duplicate_headers[file_path] = []
+                    duplicate_headers[file_path] += [header_id, line_number, file_headers[header_id]]
+
                 file_headers[header_id] = header_anchor
         
+            if (code_end_regex.search(line) and in_code_block and not already_switched):
+                # This line marks the end of a ``` code block
+                in_code_block = False
+
         f.close()
         
         # Remove IN_DIR portion of file_path
@@ -223,12 +216,33 @@ def main():
         
         headers[file_key] = file_headers
 
+    ###
+    ### END OF FIRST PASS THROUGH THE FILES
+    ###
+
+    # Check to see if there were any duplicate headers
+    if len(duplicate_headers) > 0:
+        # We have duplicate headers
+        # Print out instructions to the user to remove duplicates and exit
+        print("Porblem!")
+
+
     ##
     ## Step 4: Remove {#anchor} syntax and replace all relevent anchors with GitHub-style anchors
     ##
 
-    # Second pass through files
-    # Change lines of code that use or reference {#anchor} tags
+    ###
+    ### SECOND PASS THROUGH FILES
+    ### 
+    ### CHANGE LINES OF CODE THAT:
+    ###     - ARE HEADERS THAT HAVE THE SPECIFIED WRAPPER SYNTAX
+    ###     - HAVE LINKS THAT REFERENCE SPECIFIED ANCHORS ON THE SAME PAGE
+    ###     - HAVE LINKS THAT REFERENCE SPECIFIED ANCHORS ON OTHER PAGES
+    ### 
+    ### THEN OUTPUT THOSE CHANGES TO THE GIVEN OUTPUT DIRECTORY USING THE
+    ### SAME STRUCTURE AS THE INPUT DIRECTORY
+    ###
+
     for file_path in file_paths:
         
         # Get file_key by stripping out IN_DIR portion of file_path
@@ -241,6 +255,9 @@ def main():
         
         # Boolean flag that is set to True if a line is changed
         file_is_modified = False
+
+        # Boolean flag that keeps track of whether or not a ``` style code block is currently open
+        in_code_block = False
         
         # Open file with read capabilties
         f = open(file_path, 'r')
@@ -249,10 +266,20 @@ def main():
             has_anchor_header = header_regex.search(line)
             has_local_anchor_link = local_regex.search(line)
             has_external_anchor_link = external_regex.search(line)
+
+            # Flag to make sure we don't flip twice on the same line
+            already_switched = False
+
+            if (code_start_regex.search(line) and not in_code_block):
+                # This line represents the start of a ``` code block
+                in_code_block = True
+                already_switched = True
+
             
-            if (has_anchor_header
+            if (not in_code_block and
+                (has_anchor_header
                 or has_local_anchor_link
-                or has_external_anchor_link):
+                or has_external_anchor_link)):
                 
                 # We need to modify this line
                 
@@ -339,7 +366,7 @@ def main():
                         # link_start_index+2 to cut off '](' characters
                         # link_end_index-1 to cut off ')' character
                         link_text = replacement_line[link_start_index + 2:link_end_index - 1]
-                        
+
                         # Sanity check: Make sure that the link doesn't go to an absolute path
                         if os.path.isabs(link_text):
                             print("Absolute path found.")
@@ -385,6 +412,10 @@ def main():
             else:
                 # Line does not need to be modified
                 modified_text += line
+
+            if (code_end_regex.search(line) and in_code_block and not already_switched):
+                # This line marks the end of a ``` code block
+                in_code_block = False
         
         # Close the file!
         f.close()
@@ -393,7 +424,7 @@ def main():
             # Re-write file to original location
             if file_is_modified:
                 # Only write if file has changes
-                write_to_file(file_path, modified_text)
+                ahf.write_to_file(file_path, modified_text)
                 
         else:
             # Write file to OUT_DIR
@@ -405,9 +436,16 @@ def main():
             if not os.path.exists(os.path.dirname(final_destination)):
                 os.makedirs(os.path.dirname(final_destination))
             
-            write_to_file(final_destination, modified_text)
+            ahf.write_to_file(final_destination, modified_text)
+
+    ###
+    ### END OF SECOND PASS THROUGH FILES
+    ###
 
     print("Total headers modified: \t" + str(modified_counts[0]))
     print("Total local links modified: \t" + str(modified_counts[1]))
     print("Total external links modified: \t" + str(modified_counts[2]))
     print("Total modifications: \t\t" + str(sum(modified_counts)))
+
+if __name__ == "__main__":
+    main()
