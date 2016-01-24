@@ -1,5 +1,11 @@
 # AnchorHub FAQ {#top}
 
+---
+
+[Table of Contents](CONTENTS.md) | [AnchorHub README](README.md) | [About AnchorHub](ABOUT.md) 
+
+---
+
 ## Why Use AnchorHub? {#why}
 
 GitHub automatically produces anchor tags for headers in Markdown files- they are great for linking directly to various sections of documentation, either within one document or across many documents. It's a great feature to have, as Markdown doesn't have a way to specify `id` tags on its own. However, using them isn't always a seamless experience. Their problem is twofold:
