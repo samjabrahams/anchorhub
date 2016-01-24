@@ -1,0 +1,4 @@
+/Users/Sam/anaconda/lib/python2.7/site-packages/anchorhub-0.2-py2.7.egg
+/Users/Sam/anaconda/bin/anchorhub
+/Users/Sam/anaconda/bin/nosetests
+/Users/Sam/anaconda/bin/nosetests-2.7
