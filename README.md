@@ -217,7 +217,7 @@ dir/file2.md
 ## To-do List 
 
 * Support for reference-style Markdown links
-* Command line argument support
+* Support for Setext ("underlined") style headers
 * Verify cross-platform compatibility (currently only tested on OSX)
 * Proper exception handling
 * Support for ReStructuredText
