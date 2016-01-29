@@ -27,6 +27,7 @@ def main(argv=None):
 
     # AnchorHub modules
     import anchor_functions as ahf
+    import anchor_regex as ahr
     from anchor_variables import separator, output_default, wrapper_default
 
     ##
@@ -128,6 +129,9 @@ def main(argv=None):
 
     # Regex for external anchor links
     external_anchor_link_pattern = r"\[.+\]\([^\)]+\.md#[^\)]+\)"
+    
+    # Regex for reference links
+    reference_link_pattern = r"^ {0,3}\[.+\]:\s+\S*#\S+"
 
     # Regex for code-block demarcation
     code_block_start_pattern = r"^```"
@@ -137,6 +141,7 @@ def main(argv=None):
     wrapper_regex = re.compile(wrapper_pattern, re.UNICODE)
     local_regex = re.compile(local_anchor_link_pattern, re.UNICODE)
     external_regex = re.compile(external_anchor_link_pattern, re.UNICODE)
+    reference_regex = re.compile(reference_link_pattern, re.UNICODE)
 
     code_start_regex = re.compile(code_block_start_pattern, re.UNICODE)
     code_end_regex = re.compile(code_block_end_pattern, re.UNICODE)
@@ -146,7 +151,7 @@ def main(argv=None):
     headers = {}
 
     # Count for headers, local links, and external links modified
-    modified_counts = [0,0,0]
+    modified_counts = [0,0,0,0]
 
     ###
     ### FIRST PASS THROUGH THE FILES
@@ -265,6 +270,7 @@ def main(argv=None):
             has_anchor_header = header_regex.search(line)
             has_local_anchor_link = local_regex.search(line)
             has_external_anchor_link = external_regex.search(line)
+            has_reference_link = reference_regex.search(line)
 
             # Flag to make sure we don't flip twice on the same line
             already_switched = False
@@ -278,7 +284,8 @@ def main(argv=None):
             if (not in_code_block and
                 (has_anchor_header
                 or has_local_anchor_link
-                or has_external_anchor_link)):
+                or has_external_anchor_link)
+                or has_reference_link):
                 
                 # We need to modify this line
                 
@@ -398,8 +405,6 @@ def main(argv=None):
                         
                         # The key for the referenced file in the headers dictionary, if such a key has been made
                         link_key = os.path.relpath(IN_DIR + os.path.dirname(file_path) + separator + link_relative_path, IN_DIR)
-                        
-                        print(link_key)
 
                         if link_key in headers and anchor in headers[link_key]:
                             # The anchor has been identified in {#anchor} notation before
@@ -419,7 +424,37 @@ def main(argv=None):
                     
                     # Push changes to replacement_line
                     replacement_line = changed_line
-                
+
+                if has_reference_link and ahr.is_valid_reference_link(line):
+                    # Line is a local reference link
+
+                    # MatchObject for the link
+                    link = reference_regex.match(replacement_line)
+
+                    link_start_index = replacement_line.find(']:') + 2
+                    link_end_index = link.end()
+
+                    link_text = replacement_line[link_start_index:link_end_index].strip()
+
+                    hash_index = link_text.find('#')
+
+                    link_file = link_text[:hash_index]
+
+                    anchor = link_text[hash_index + 1:]
+
+                    if link_file == "":
+                        link_key = file_key
+
+                    else: 
+                        link_key = os.path.relpath(IN_DIR + os.path.dirname(file_path) + separator + link_file, IN_DIR)
+
+                    if link_key in headers and anchor in headers[link_key]:
+                        # The anchor has been identified in {#anchor} notation before
+                        # Replace the link with the corresponding GitHub style anchor
+
+                        replacement_line = replacement_line[0:link_start_index] + " " + link_file + "#" + headers[link_key][anchor] + replacement_line[link_end_index:]
+
+                        modified_counts[3] += 1
                 # Add modified line to the text holder
                 modified_text += replacement_line
                 
@@ -459,6 +494,7 @@ def main(argv=None):
     print("Total headers modified: \t" + str(modified_counts[0]))
     print("Total local links modified: \t" + str(modified_counts[1]))
     print("Total external links modified: \t" + str(modified_counts[2]))
+    print("Total reference links modified: " + str(modified_counts[3]))
     print("Total modifications: \t\t" + str(sum(modified_counts)))
 
 if __name__ == "__main__":
