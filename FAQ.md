@@ -19,7 +19,7 @@ AnchorHub allows you to create virtual anchor tags using concise syntax, which w
 
 ## What About ReStructuredText Support? 
 
-This is my first dive into creating a Python package, and I discovered that, ironically, the preferred text format in the Python community is [ReStructuredText](http://docutils.sourceforge.net/rst.html)! Whoops. After I refactor some code and make certain pieces a bit more modular, I hope to add in .rst support.
+This is my first dive into creating a Python package, and I discovered that, ironically, the preferred text format for documentation in the Python community is [ReStructuredText](http://docutils.sourceforge.net/rst.html)! Whoops. After I refactor some code and make certain pieces a bit more modular, I hope to add in .rst support.
 
 ## Can You Add Support for Non-GitHub Style Header Anchors? 
 

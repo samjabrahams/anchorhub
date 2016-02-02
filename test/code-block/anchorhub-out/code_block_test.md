@@ -1,4 +1,4 @@
-# Here is the sample header 
+# Here is the sample header
 
 The link on this line [should change](#here-is-the-sample-header)
 

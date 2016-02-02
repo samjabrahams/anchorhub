@@ -19,33 +19,6 @@ import glob
 
 from anchor_variables import separator
 
-# ## Define functions
-
-# Given a directory path, returns the path string, making sure it ends with a forward slash '/'
-def end_string_in_char(string, char):    
-    if len(char) != 1:
-        # Should throw some sort of error
-        return string    
-    if string[-1] != char:
-        return string + char
-    else:
-        return string
-
-# Helper method to quickly output text to a given file path
-def write_to_file(path, text):
-    # Open file with read capabilties
-    f = open(path, 'w')
-            
-    # Write text to file
-    f.write(text)
-            
-    # Close the file
-    f.close()
-
-def find_last_match(regexObj, string):
-    matches = regexObj.findall(string)
-    return matches[len(matches) - 1]
-
 # Creates a new anchor link, constructed from the original text
 # A header with the form "   This is my Cool Header!!" creates
 # the anchor "#this-is-my-cool-header"
@@ -95,11 +68,6 @@ def list_all_files_in_directory_with_extensions(dir, exts, exclude):
 
     return file_paths
 
-# Display instructions to user on how to fix duplicate anchor tags
-def print_duplicate_header_information(duplicates):
-    print("ERROR: Duplicate anchors specified on the same page(s)")
-    print("Please modify your code to remove duplicates.\r\n")
-    for file_path in duplicates:
-        for line_info in duplicates[file_path]:
-            print("File: " + file_path + " line " + line_info[1])
-            print("\t Anchor " + line_info[0] + " already used for previous header: " + line_info[2])
+def strip_prefix_from_list(list, strip):
+    for i in range(len(list)):
+        list[i] = list[i][len(strip):]
