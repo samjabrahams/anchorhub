@@ -39,7 +39,9 @@ class ArmedSwitch(object):
         self._switched = switched
         self._armed = armed
 
-    def switch(self, val=not self._switched):
+    def switch(self, val=None):
+        if val == None:
+            val = not self._switched
         if self._armed:
             self._switched = val
             self._armed = False

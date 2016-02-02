@@ -13,14 +13,14 @@
 #    limitations under the License.
 # ==============================================================================
 
-
+from switches.armedswitch import ArmedSwitch
 
 class TestArmedSwitch(object):
 
     def __init__(self, on_test=lambda x, y: True, off_test=lambda x, y: True):     
         self.on_test = on_test
         self.off_test = off_test
-        self._switch = new ArmedSwitch()
+        self._switch = ArmedSwitch()
 
     def switch(self, this_line, next_line):
         if self.is_switched():
