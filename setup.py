@@ -11,12 +11,16 @@ from os import path
 
 here = path.abspath(path.dirname(__file__))
 
-# Get the long description from the README file
-with open(path.join(here, 'pypiREADME.rst'), encoding='utf-8') as f:
-    long_description = f.read()
+# Want this to work, but it's breaking the build right now
+# Will fix after finishing refactoring
+#with open(path.join(path.dirname(__file__), 'anchorhub/VERSION'), 'rb') as f:
+#    version = f.read().decode('ascii').strip()
+#    f.close()
 
-with open(path.join(path.dirname(__file__), 'anchorhub/VERSION'), 'rb') as f:
-    version = f.read().decode('ascii').strip()
+# Get the long description from the README file
+with open(path.join(path.dirname(__file__), 'pypiREADME.rst'), 'rb') as f:
+    long_description = f.read().decode('ascii')
+    f.close()
 
 setup(
     name='anchorhub',
@@ -24,7 +28,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version=version,
+    version="0.10",
 
     description='Easily utilize GitHub\'s automatically generated anchors within and across Markdown documents',
     long_description=long_description,

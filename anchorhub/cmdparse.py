@@ -24,8 +24,10 @@ import helpers
 from anchor_variables import separator, output_default, wrapper_default
 
 def parse_args():
-    with open(path.join(path.dirname(__file__), 'VERSION'), 'rb') as f:
-        version = f.read().decode('ascii').strip()
+    #with open(path.join(path.dirname(__file__), 'VERSION'), 'rb') as f:
+    #    version = f.read().decode('ascii').strip()
+
+    version = "0.10"
 
     parser = argparse.ArgumentParser(version=version, description="anchorhub parses through Markdown files and precompiles links to specially formatted anchors")
 

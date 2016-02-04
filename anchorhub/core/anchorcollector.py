@@ -12,11 +12,12 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 # ==============================================================================
+from abc import ABCMeta, abstractmethod
 
 class AnchorCollector(object):
 
-    def __init__(self, converter, strategies, switches=None):
-        self._converter = converter
+    def __init__(self, convert, strategies, switches=None):
+        self._convert = convert
         self._strategies = strategies
         self._switches = switches
 
@@ -54,7 +55,7 @@ class AnchorCollector(object):
                                     duplicate_headers[file_path] = []
                                 duplicate_headers[file_path] += [anchor, line_number, file_anchors[anchor]]
 
-                            converted_header = converter.convert(header)
+                            converted_header = self._convert(header)
                             file_anchors[anchor] = converted_header
 
                 this_line = next_line
@@ -66,12 +67,15 @@ class AnchorCollector(object):
 
         return anchors, duplicate_anchors
 
-class AnchorCollectorStrategy(object):
-    def __init__(self, test, get):
-        # test(this_line, next_line)
-        #   Returns true if the line should be parsed
-        self.test = test
+class AnchorCollectorStrategy(metaclass=ABCMeta):
+    def __init__(self):
+        pass
 
-        # get(this_line, next_line)
-        # Should return the collected anchor, as well as the header portion that needs to be converted
-        self.get = get
+    # Returns true if the line should be parsed with the get method
+    @abstractmethod
+    def test(self, this_line, next_line):
+        pass
+
+    # Should return the collected anchor, as well as the header portion that needs to be converted
+    @abstractmethod
+    def get(self, this_line, next_line):

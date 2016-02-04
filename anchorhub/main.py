@@ -98,6 +98,8 @@ def main():
     external_regex = re.compile(external_anchor_link_pattern, re.UNICODE)
     reference_regex = re.compile(reference_link_pattern, re.UNICODE)
 
+    link_regex = re.compile(r"\[.+\]\s*\(\s*[^\s\)]*#[^\s\)]+\s*\)", re.UNICODE)
+
     code_start_regex = re.compile(code_block_start_pattern, re.UNICODE)
     code_end_regex = re.compile(code_block_end_pattern, re.UNICODE)
 
@@ -220,6 +222,7 @@ def main():
             has_local_anchor_link = local_regex.search(line)
             has_external_anchor_link = external_regex.search(line)
             has_reference_link = reference_regex.search(line)
+            has_anchor_link = link_regex.search(line)
 
             # Flag to make sure we don't flip twice on the same line
             already_switched = False
@@ -236,6 +239,7 @@ def main():
             if (not in_code_block and
                 (has_anchor_header
                 or has_local_anchor_link
+                or has_anchor_link
                 or has_external_anchor_link)
                 or has_reference_link):
                 
@@ -258,8 +262,73 @@ def main():
 
                     # Increment header modified count
                     modified_counts[0] += 1
-                    
-                if has_local_anchor_link:                
+                
+                if has_anchor_link:
+                    # Line has at least one inline link with an anchor tag in it
+
+                    # Holder for incremental changes to replacement_line
+                    # replacement_line will be replaced by this at the end of this section 
+                    changed_line = ""
+
+                    links = [m.span() for m in link_regex.finditer(replacement_line)]
+
+                    # Most recent index used
+                    last_index = 0
+
+                    for link in links:
+                        # Check each link and change if necessary
+                        link_start_index = link[0]
+                        link_end_index = link[1]
+
+                        link_text = replacement_line[link_start_index:link_end_index]
+
+                        url_start = re.search(r"\[.+\]\s*\(", link_text).end()
+
+                        url_text = link_text[url_start:len(link_text) - 1].strip()
+
+                        print("URL IS '" + url_text + "'")
+
+                        hash_index = url_text.find('#')
+
+                        link_file = url_text[:hash_index]
+
+                        anchor = url_text[hash_index + 1:]
+
+                        if link_file == "":
+                            link_key = file_path
+
+                        else:
+                            link_key = os.path.relpath(IN_DIR + os.path.dirname(file_path) + separator + link_file, IN_DIR)
+
+                        print("Key: " + link_key)
+                        print("Anchor: " + anchor)
+
+                        if link_key in headers and anchor in headers[link_key]:
+                            # The anchor has been identified in {#anchor} notation before
+                            # Replace the link with the corresponding GitHub style anchor
+
+                            changed_line += replacement_line[last_index: link_start_index + url_start] + link_file + "#" + headers[link_key][anchor] + ")"
+
+                            if link_file == "":
+                                # Increment local inline link counter
+                                modified_counts[1] += 1
+                            else:
+                                # Increment external inline link counter
+                                modified_counts[2] += 1
+
+                        else:
+                            # Normal anchor: don't change it
+                            changed_line += replacement_line[last_index : link_end_index]
+
+                        last_index = link_end_index
+
+                    # Include the end of the line
+                    changed_line += replacement_line[last_index:]
+
+                    # Push changes to replacement_line
+                    replacement_line = changed_line
+
+                if has_local_anchor_link and False:                
                     # Line has at least one local anchor link
 
                     # Holder for incremental changes to replacement_line
@@ -303,7 +372,7 @@ def main():
                     # Push changes to replacement_line
                     replacement_line = changed_line
                     
-                if has_external_anchor_link:
+                if has_external_anchor_link and False:
                     # Line has at least one external anchor link
 
                     # Holder for incremental changes to replacement_line
