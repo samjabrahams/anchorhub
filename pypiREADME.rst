@@ -1,4 +1,4 @@
-.. figure:: https://raw.githubusercontent.com/samjabrahams/anchorhub/master/img/graphic.png
+.. figure:: img/graphic.png
    :alt: AnchorHub graphic
 
    AnchorHub graphic
@@ -20,6 +20,13 @@ Features
 -  Simple, customizable syntax that just works
 -  Works within the entire directory tree automatically
 
+--------------
+
+`Table of Contents <CONTENTS.md>`__ \| `FAQ <FAQ.md>`__ \| `About
+AnchorHub <ABOUT.md>`__
+
+--------------
+
 Installation
 ------------
 
@@ -36,7 +43,7 @@ Quick Start Guide
 Inside your Markdown files, define and use header anchors like the
 following:
 
-.. code:: markdown
+..
 
     # This is a header that I would like to make an id for {#head}
     [This link points to that header!](#head)
@@ -52,7 +59,7 @@ This will output your processed files in a new folder in your current
 directory, 'anchorhub-out'. The output of AnchorHub on the Markdown
 written above is this:
 
-::
+..
 
     # This is a header that I would like to make an id for
     [This link points to that header!](#this-is-a-header-that-i-would-like-to-make-an-id-for)
@@ -75,7 +82,7 @@ Defining Anchors
 Place identifiers with a leading '#' inside of ``{ }`` wrappers at end
 of header lines you'd like to reference. For example:
 
-::
+..
 
     # This is the header I'd like to create an anchor for {#head}
 
@@ -88,7 +95,7 @@ Link Syntax
 Write links to your specified anchors as if you had created an HTML
 element with an ``id`` or ``name`` parameter:
 
-::
+..
 
     In the middle of this sentence, I'd like to link back to [the header specified above](#head)
 
@@ -97,7 +104,7 @@ directory tree, so if you had a file named 'other.md' with '#ref'
 defined as an anchor, you can link to it from your original file without
 any additional effort:
 
-::
+.. code:: markdown
 
     Let's link to that [other file's anchor!](other.md#ref)
 
@@ -112,7 +119,7 @@ AnchorHub's Command Line Interface
 Usage
 ~~~~~
 
-::
+..
 
     anchorhub [-h] [-v] [-X] [-e EXTENSIONS [EXTENSIONS ...]] [-w WRAPPER] input [output]
 
@@ -123,7 +130,7 @@ The only required argument to ``anchorhub`` is the desired input root.
 AnchorHub will walk through all subdirectories within the input and
 process all Markdown files it finds.
 
-::
+..
 
     $ anchorhub path/to/my/input
 
@@ -136,7 +143,7 @@ the present working directory. Regardless of where the output is
 located, the structure of the output directory will match that of the
 input directory.
 
-::
+..
 
     $ anchorhub input path/to/my/output
 
@@ -145,20 +152,20 @@ Options
 
 **-h / --help:** Display the terminal help prompt for ``anchorhub``
 
-::
+..
 
     $ anchorhub -h
 
 **-v / --version:** Display the installed version of ``anchorhub``
 
-::
+..
 
     $ anchorhub -v
 
 **-X / --overwrite:** Instead of outputting to a separate directory,
 overwrite the input files
 
-::
+..
 
     $ anchorhub -X ./input
 
@@ -168,7 +175,7 @@ with the provided extensions
 The default value is ``".md"``. You can provide multiple extensions if
 you have files that use various extensions:
 
-::
+..
 
     $ anchorhub ./input -e .md .markdown .MD 
 
@@ -178,7 +185,7 @@ The default value is ``"{ }"``. Make sure you have a space between your
 opening and closing patterns and to wrap the whole thing in quotation
 marks:
 
-::
+..
 
     $ anchorhub ./input -w "[--> <--]"
 
@@ -194,7 +201,7 @@ Single file
 Input
 ^^^^^
 
-::
+..
 
     # This is the top of my document! {#top}
     Going to have some more cool text explaining stuff.
@@ -211,7 +218,7 @@ Input
 Output
 ^^^^^^
 
-::
+..
 
     # This is the top of my document! 
     Going to have some more cool text explaining stuff.
@@ -239,14 +246,14 @@ Input
 
 file1.md
 
-::
+..
 
     # Some header for this file {#go-here}
     [Link to another file's header](dir/file2.md#awesome)
 
 dir/file2.md
 
-::
+..
 
     # The awesome header in file2.md {#awesome}
     [Link back to file1.md](../file1.md#go-here)
@@ -256,14 +263,14 @@ Output
 
 file1.md
 
-::
+..
 
     # Some header for this file 
     [Link to another file's header](dir/file2.md#the-awesome-header-in-file2md)
 
 dir/file2.md
 
-::
+..
 
     # The awesome header in file2.md 
     [Link back to file1.md](../file1.md#some-header-for-this-file)
@@ -272,7 +279,7 @@ To-do List
 ----------
 
 -  Support for reference-style Markdown links
--  Command line argument support
+-  Support for Setext ("underlined") style headers
 -  Verify cross-platform compatibility (currently only tested on OSX)
 -  Proper exception handling
 -  Support for ReStructuredText
