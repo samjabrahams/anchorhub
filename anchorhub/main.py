@@ -31,7 +31,6 @@ def main():
     import messages
     import helpers
     import cmdparse
-    import anchor_regex as ahr
     from anchor_variables import separator, output_default, wrapper_default
 
     ##
@@ -78,12 +77,6 @@ def main():
     wrapper_pattern = re.escape(OPEN) + r"\s*#((?!" + re.escape(OPEN) + r")(?!" + re.escape(CLOSE) + r")\S)+\s*" + re.escape(CLOSE)
     # Regex for marked header
     header_pattern = r"^#+ .+" + wrapper_pattern + r"\s*$"
-
-    # Regex for local anchor links
-    local_anchor_link_pattern = r"\[.+\]\(#[^\)]+\)"
-
-    # Regex for external anchor links
-    external_anchor_link_pattern = r"\[.+\]\([^\)]+\.md#[^\)]+\)"
     
     # Regex for reference links
     reference_link_pattern = r"^ {0,3}\[.+\]:\s+\S*#\S+"
@@ -94,10 +87,9 @@ def main():
 
     header_regex = re.compile(header_pattern, re.UNICODE)
     wrapper_regex = re.compile(wrapper_pattern, re.UNICODE)
-    local_regex = re.compile(local_anchor_link_pattern, re.UNICODE)
-    external_regex = re.compile(external_anchor_link_pattern, re.UNICODE)
+    
+    valid_ref_regex = re.compile(r"^ {0,3}\[.+\]:\s+\S*#\S+\s+(['\"]).+\1\s*$|^ {0,3}\[.+\]:\s+\S*#\S+\s+\(.+\)\s*$|^ {0,3}\[.+\]:\s+\S*#\S+\s*$", re.UNICODE)
     reference_regex = re.compile(reference_link_pattern, re.UNICODE)
-
     link_regex = re.compile(r"\[.+\]\s*\(\s*[^\s\)]*#[^\s\)]+\s*\)", re.UNICODE)
 
     code_start_regex = re.compile(code_block_start_pattern, re.UNICODE)
@@ -219,8 +211,6 @@ def main():
         
         for line in f:
             has_anchor_header = header_regex.search(line)
-            has_local_anchor_link = local_regex.search(line)
-            has_external_anchor_link = external_regex.search(line)
             has_reference_link = reference_regex.search(line)
             has_anchor_link = link_regex.search(line)
 
@@ -238,10 +228,8 @@ def main():
             
             if (not in_code_block and
                 (has_anchor_header
-                or has_local_anchor_link
                 or has_anchor_link
-                or has_external_anchor_link)
-                or has_reference_link):
+                or has_reference_link)):
                 
                 # We need to modify this line
                 
@@ -286,8 +274,6 @@ def main():
 
                         url_text = link_text[url_start:len(link_text) - 1].strip()
 
-                        print("URL IS '" + url_text + "'")
-
                         hash_index = url_text.find('#')
 
                         link_file = url_text[:hash_index]
@@ -299,9 +285,6 @@ def main():
 
                         else:
                             link_key = os.path.relpath(IN_DIR + os.path.dirname(file_path) + separator + link_file, IN_DIR)
-
-                        print("Key: " + link_key)
-                        print("Anchor: " + anchor)
 
                         if link_key in headers and anchor in headers[link_key]:
                             # The anchor has been identified in {#anchor} notation before
@@ -328,120 +311,7 @@ def main():
                     # Push changes to replacement_line
                     replacement_line = changed_line
 
-                if has_local_anchor_link and False:                
-                    # Line has at least one local anchor link
-
-                    # Holder for incremental changes to replacement_line
-                    # replacement_line will be replaced by this at the end of this section 
-                    changed_line = ""
-                    
-                    # Get list of all local link start and end indices
-                    links=[m.span() for m in local_regex.finditer(replacement_line)]
-                    
-                    # Most recent index used
-                    last_index = 0
-                    
-                    for link in links:
-                        # Check each local header link and change if necessary
-
-                        link_start_index = link[0]
-                        link_end_index = link[1]
-                        
-                        # Index of the '](#' characters in the link
-                        url_begin = replacement_line[link_start_index:link_end_index].find('](#')
-
-                        # Extract #anchor text
-                        anchor = replacement_line[link_start_index + url_begin + 3 : link_end_index - 1]
-                        
-                        if anchor in headers[file_path]:
-                            # The anchor has been identified in {#anchor} notation before
-                            # Replace the link with the corresponding GitHub style anchor
-                            changed_line += replacement_line[last_index : link_start_index + url_begin] + "](#" + headers[file_path][anchor] + ")"
-
-                            # Increment local links modified count
-                            modified_counts[1] += 1
-                        else:
-                            # Normal anchor: don't change it
-                            changed_line += replacement_line[last_index : link_end_index]
-                        
-                        last_index = link_end_index
-                        
-                    # Include the end of the line
-                    changed_line += replacement_line[last_index:]
-                    
-                    # Push changes to replacement_line
-                    replacement_line = changed_line
-                    
-                if has_external_anchor_link and False:
-                    # Line has at least one external anchor link
-
-                    # Holder for incremental changes to replacement_line
-                    # replacement_line will be replaced by this at the end of this section 
-                    changed_line = ""
-                    
-                    # Get list of all link start and end indices
-                    links=[m.span() for m in external_regex.finditer(replacement_line)]
-                    
-                    # Most recent index used
-                    last_index = 0
-                    
-                    for link in links:
-                        # Check each external header link and change if necessary
-                        
-                        # Start/end index of link text inside of replacement_line
-                        link_start_index = link[0]
-                        link_end_index = link[1]
-
-                        # Regex match object for ]( (with no escaping backslash preceding it)
-                        braces_match = re.search(r"[^\\]\]\(",replacement_line[link_start_index:link_end_index], flags=re.UNICODE)
-                        # Index of where the link ends ](
-                        braces_index = braces_match.end()
-
-                        # The url of the link, with braces and parentheses removed
-                        # link_start_index+2 to cut off '](' characters
-                        # link_end_index-1 to cut off ')' character
-                        link_text = replacement_line[link_start_index + braces_index:link_end_index - 1]
-
-                        # Sanity check: Make sure that the link doesn't go to an absolute path
-                        if os.path.isabs(link_text):
-                            print("Absolute path found.")
-                            continue
-                        
-                        # Index of the hash/pound sign
-                        hash_index = link_text.rfind('.md#') + 3
-                        
-                        # Index of the hash/pound sign, relative to the whole replacement_line
-                        abs_hash_index = hash_index + link_start_index + braces_index
-                        
-                        # Anchor text
-                        anchor = link_text[hash_index + 1:]
-                        
-                        # Path to linked Markdown file, relative to current document
-                        link_relative_path = link_text[:hash_index]
-                        
-                        # The key for the referenced file in the headers dictionary, if such a key has been made
-                        link_key = os.path.relpath(IN_DIR + os.path.dirname(file_path) + separator + link_relative_path, IN_DIR)
-
-                        if link_key in headers and anchor in headers[link_key]:
-                            # The anchor has been identified in {#anchor} notation before
-                            # Replace the link with the corresponding GitHub style anchor
-                            changed_line += replacement_line[last_index : abs_hash_index] + "#" + headers[link_key][anchor] + ")"
-
-                            # Increment external links modified count
-                            modified_counts[2] += 1
-                        else:
-                            # Normal anchor: don't change it
-                            changed_line += replacement_line[last_index : link_end_index]
-                        
-                        last_index = link_end_index
-                                                    
-                    # Include the end of the line
-                    changed_line += replacement_line[last_index:]
-                    
-                    # Push changes to replacement_line
-                    replacement_line = changed_line
-
-                if has_reference_link and ahr.is_valid_reference_link(line):
+                if has_reference_link and valid_ref_regex.match(line):
                     # Line is a local reference link
 
                     # MatchObject for the link

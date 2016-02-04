@@ -2,3 +2,4 @@ UNTRACKED/
 anchorhub.egg-info/
 build/
 dist/
+**.pyc

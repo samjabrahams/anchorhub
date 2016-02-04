@@ -18,11 +18,6 @@ import re
 ##
 ## STANDARD LINK REGEX
 ##
-# Regex for local anchor links
-local_anchor_link_pattern = r"\[.+\]\(#[^\)]+\)"
-
-# Regex for external anchor links
-external_anchor_link_pattern = r"\[.+\]\([^\)]+\.md#[^\)]+\)"
 
 anchor_link_pattern = r"\[.+\]\s*\(\s*[^\s\)]*#[^\s\)]+\s*\)"
 
@@ -32,21 +27,6 @@ anchor_link_pattern = r"\[.+\]\s*\(\s*[^\s\)]*#[^\s\)]+\s*\)"
 ##
 
 # Regex patterns for valid reference links
-# A valid reference link line will match one of the following patterns
-#
-#### HOPEFULLY THE DOUBLE AND SINGLE QUOTE PATTERNS WILL BE REMOVED
-# Regex for complete valid reference link with double quote wrapped title
-valid_reference_link_pattern_double_quote =r'^ {0,3}\[.+\]:\s+\S*#\S+\s+".+"\s*$'
-# Regex for complete valid reference link with single quote wrapped title
-valid_reference_link_pattern_single_quote =r"^ {0,3}\[.+\]:\s+\S*#\S+\s+'.+'\s*$"
-
-# Regex for complete valid reference link with single or double quote wrapped title
-valid_reference_link_pattern_quote = r"^ {0,3}\[.+\]:\s+\S*#\S+\s+(['"]).+\1\s*$"
-# Regex for complete valid reference link with parentheses wrapped title
-valid_reference_link_pattern_parentheses =r"^ {0,3}\[.+\]:\s+\S*#\S+\s+\(.+\)\s*$"
-# Regex for complete valid reference link with no title
-valid_reference_link_pattern_notitle =r"^ {0,3}\[.+\]:\s+\S*#\S+\s*$"
-
 valid_reference_link_pattern = r"^ {0,3}\[.+\]:\s+\S*#\S+\s+(['"]).+\1\s*$|^ {0,3}\[.+\]:\s+\S*#\S+\s+\(.+\)\s*$|^ {0,3}\[.+\]:\s+\S*#\S+\s*$"
 
 # Regex that will match the beginning portion of a reference link pattern
@@ -82,7 +62,5 @@ def make_setext_header_pattern(wrapper_pattern):
 
 # Regex for Setext underline of a header
 setext_underline_pattern = r"^([-=])\1*\s*$"
-
-default_
 
 
