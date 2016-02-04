@@ -33,6 +33,10 @@ def main():
     import cmdparse
     from anchor_variables import separator, output_default, wrapper_default
 
+
+    # THIS SHOULD BE PART OF ARGS PARSING/INTERPRETING
+    import builtin.github.ghcollector as ghc
+
     ##
     ## Step 0: Parse command line arguments
     ##
@@ -108,57 +112,9 @@ def main():
     # If any are found after the pass, we will exit the program and let the user know where the duplicates are
     duplicate_headers = {}
 
-    for file_path in file_paths:
-        # Local file headers to be placed in the global headers dict
-        file_headers = {}
-        
-        # Open the file with read capabilities
-        f = open(file_path, 'rb')
+    anchor_collector = ghc.getCollector(OPEN, CLOSE)
 
-        # Boolean flag that keeps track of whether or not a ``` style code block is currently open
-        in_code_block = False
-        
-        # Go through each line in the file
-        for line_number, line in enumerate(f, 1):
-
-            # Flag to make sure we don't flip twice on the same line
-            already_switched = False
-
-            if (code_start_regex.search(line) and not in_code_block):
-                # This line represents the start of a ``` code block
-                in_code_block = True
-                already_switched = True
-
-            if (code_end_regex.search(line) and in_code_block and not already_switched):
-                # This line marks the end of a ``` code block
-                in_code_block = False
-
-            if header_regex.search(line) and not in_code_block:
-                # Line has '# Header {#id}' format
-                
-                # Index of the start of the header, after '#' characters
-                start_index = line.find('# ') + 2
-                
-                # Index of the start and end identifiers
-                start_id_index = line.rfind(OPEN)
-                end_id_index = line.rfind(CLOSE)
-                
-                header_id = line[start_id_index + len(OPEN) + 1:end_id_index]
-                header_anchor = ahf.create_anchor_from_header(line[start_index:start_id_index], file_headers.values())
-                
-                # Check to make sure that the id hasn't been used already
-                if header_id in file_headers:
-                    # The id has already been used- place it in the duplicate_headers dict
-                    # Will instruct users on fixing this afterward
-                    if not duplicate_headers[file_path]:
-                        duplicate_headers[file_path] = []
-                    duplicate_headers[file_path] += [header_id, line_number, file_headers[header_id]]
-
-                file_headers[header_id] = header_anchor
-        
-        f.close()
-        
-        headers[file_path] = file_headers
+    headers, duplicate_headers = anchor_collector.collect(file_paths)
 
     ###
     ### END OF FIRST PASS THROUGH THE FILES
