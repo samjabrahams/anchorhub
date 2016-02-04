@@ -13,7 +13,7 @@
 #    limitations under the License.
 # ==============================================================================
 
-from core.anchorcollector import AnchorCollector, AnchorCollectorStrategy
+from core.collector import AnchorCollector, AnchorCollectorStrategy
 from core.switches.testarmedswitch import TestArmedSwitch
 from regex.markdown.reobj import MarkdownRegex
 import header_transform as ht
