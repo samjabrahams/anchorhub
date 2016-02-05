@@ -27,7 +27,7 @@ def parse_args():
     #with open(path.join(path.dirname(__file__), 'VERSION'), 'rb') as f:
     #    version = f.read().decode('ascii').strip()
 
-    version = "0.11"
+    version = "0.12"
 
     parser = argparse.ArgumentParser(version=version, description="anchorhub parses through Markdown files and precompiles links to specially formatted anchors")
 
