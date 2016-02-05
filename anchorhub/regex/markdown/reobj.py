@@ -14,7 +14,7 @@
 # ==============================================================================
 import re
 import patterns as p
-from core.lazyregex import LazyRegex
+from anchorhub.core.lazyregex import LazyRegex
 
 class MarkdownRegex(object):
     def __init__(self, opn, close):

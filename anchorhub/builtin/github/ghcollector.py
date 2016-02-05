@@ -13,9 +13,9 @@
 #    limitations under the License.
 # ==============================================================================
 
-from core.collector import AnchorCollector, AnchorCollectorStrategy
-from core.switches.testarmedswitch import TestArmedSwitch
-from regex.markdown.reobj import MarkdownRegex
+from anchorhub.core.collector import AnchorCollector, AnchorCollectorStrategy
+from anchorhub.core.switches.testarmedswitch import TestArmedSwitch
+from anchorhub.regex.markdown.reobj import MarkdownRegex
 import header_transform as ht
 
 def getCollector(opn, close):

@@ -35,7 +35,7 @@ def main():
 
 
     # THIS SHOULD BE PART OF ARGS PARSING/INTERPRETING
-    import builtin.github.ghcollector as ghc
+    import anchorhub.builtin.github.ghcollector as ghc
 
     ##
     ## Step 0: Parse command line arguments
