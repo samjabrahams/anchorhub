@@ -3,3 +3,6 @@ anchorhub.egg-info/
 build/
 dist/
 **.pyc
+anchorhub/OLD/
+.idea/
+anchorhub.iml
