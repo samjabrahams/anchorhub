@@ -1,0 +1,3 @@
+"""
+Settings module for AnchorHub
+"""
