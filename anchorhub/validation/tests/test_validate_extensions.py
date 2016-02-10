@@ -10,6 +10,16 @@ from nose.tools import *
 import anchorhub.validation.validate_extensions as v
 from anchorhub.exceptions.validationexception import ValidationException
 
+
+class ExtSpace(object):
+    """
+    Simple class to test out namespace implementations of validate_extensions()
+    """
+    def __init__(self, e=None):
+        if e is not None:
+            self.extensions = e
+
+
 def test_validate_correct():
     """
     validate_extensions.py: Test validate() on correct lists
@@ -44,15 +54,6 @@ def test_validate_incorrect_empty_list():
     """
     a = []
     assert v.validate(a)
-
-
-class ExtSpace(object):
-    """
-    Simple class to test out namespace implementations of validate_extensions()
-    """
-    def __init__(self, e=None):
-        if e is not None:
-            self.extensions = e
 
 
 def test_validate_correct_namespace():
@@ -112,3 +113,13 @@ def test_validate_bad_type_number():
     :raises ValueError: always, if the test is working
     """
     assert v.validate(3)
+
+
+@raises(ValueError)
+def test_validate_bad_type_no_extensions_attr():
+    """
+    validate_extensions.py: Test validate() with object lacking 'extensions'
+
+    :raises ValueError: always, if the test is working
+    """
+    assert v.validate(object())

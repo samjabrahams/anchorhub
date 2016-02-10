@@ -10,7 +10,8 @@ def validate(opts):
     'extensions' and runs validations on it accordingly. If opts is neither
     of those things, this will raise a ValueError
 
-    :param opts:
+    :param opts: either a list of strings or a namespace with the attribute
+        'extensions'
     :raises ValueError: if the value passed in is not a list or a namespace
         with the attribute 'extensions'
     :raises ValidationException: if the extensions fail validations
@@ -28,7 +29,7 @@ def validate(opts):
 
 def _validate(extensions):
     """
-    Perform validations on a list of extensions. Will raise a ValidationException if
+    Perform validations on a list of extensions. Raises a ValidationException if
     it finds something wrong.
 
     :param extensions: a list of string extensions
