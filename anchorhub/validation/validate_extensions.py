@@ -3,6 +3,7 @@ Functions for validating extensions passed in as arguments to AnchorHub
 """
 from anchorhub.exceptions.validationexception import ValidationException
 
+
 def validate(opts):
     """
     Client-facing validate method. Checks to see if the passed in opts

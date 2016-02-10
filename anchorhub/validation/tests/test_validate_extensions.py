@@ -75,7 +75,7 @@ def test_validate_empty_string_namespace():
     """
     validate_extensions.py: Test validate() on a namespace with an empty string
 
-    Try validatign a namespace that has an empty string as part of the list
+    Try validating a namespace that has an empty string as part of the list
     under its extensions attribute.
 
     :raises ValidationException: always, if the test is working
