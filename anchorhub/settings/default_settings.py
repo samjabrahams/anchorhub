@@ -5,7 +5,7 @@ Defaults for all settings used by AnchorHub
 WRAPPER = '{ }'
 
 INPUT = '.'
-OUTPUT = 'out-anchorhub'
+OUTPUT = 'anchorhub-out'
 
 ARGPARSER = {
     'description': "anchorhub parses through Markdown files and precompiles "
