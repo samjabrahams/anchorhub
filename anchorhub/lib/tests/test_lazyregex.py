@@ -12,7 +12,7 @@ from anchorhub.lib.lazyregex import LazyRegex
 
 def test_init():
     """
-    Test basic LazyRegex initialization and parameter assignment
+    lib/lazyregex.py: Test LazyRegex initialization and parameter assignment
     """
     l = LazyRegex("beep")
     assert l.get_pattern() == "beep"
@@ -20,7 +20,7 @@ def test_init():
 
 def test_search():
     """
-    Test the LazyRegex.search() method
+    lib/lazyregex.py: Test the LazyRegex.search() method
     """
     l = LazyRegex("beep")
     assert l.search("This is a beep sentence.")
@@ -29,7 +29,7 @@ def test_search():
 
 def test_match():
     """
-    Test the LazyRegex.match() method
+    lib/lazyregex.py: Test the LazyRegex.match() method
     """
     l = LazyRegex("beep")
     assert l.match("This shouldn't match! beep beep beep.") is None
@@ -38,7 +38,7 @@ def test_match():
 
 def test_get_regex():
     """
-    Tests LazyRegex.get_regex() method
+    lib/lazyregex.py: Tests LazyRegex.get_regex() method
     """
     l = LazyRegex("beep")
     assert type(l.get_regex()) == type(re.compile("beep"))
@@ -46,6 +46,8 @@ def test_get_regex():
 
 def test_laziness():
     """
+    lib/lazyregex.py: Test laziness
+
     Test to make sure LazyRegex doesn't create the compiled regular
     expression object until it is needed.
     """
@@ -56,7 +58,7 @@ def test_laziness():
 
 def test_get_pattern():
     """
-    Test the LazyRegex.get_pattern() method
+    lib/lazyregex.py: Test get_pattern()
     """
     l = LazyRegex("beep")
     assert l.get_pattern() == "beep"

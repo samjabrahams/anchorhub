@@ -10,8 +10,7 @@ from anchorhub.lib.armedcheckswitch import ArmedCheckSwitch
 
 def test_init_base():
     """
-    Test basic functionality and default parameters of ArmedCheckSwitch init
-    :return:
+    armedcheckswitch.py: Test __init__() and its default parameters
     """
     s = ArmedCheckSwitch()
     assert s.is_switched() == False
@@ -20,8 +19,7 @@ def test_init_base():
 
 def test_init_params():
     """
-    Test initializing ArmedCheckSwitch with different starting values
-    :return:
+    armedcheckswitch.py: Test __init__() with different parameters
     """
     s1 = ArmedCheckSwitch(switched=True, armed=False)
     assert s1.is_switched() == True
@@ -44,7 +42,7 @@ def is_equal_to_one(n):
     """
     Simple function to use as a callback for tests
     :param n: Integer. Compared to 1
-    :return:
+    :return: True if n equals 1. False otherwise
     """
     return n == 1
 
@@ -53,15 +51,14 @@ def is_equal_to_two(n):
     """
     Simple function to use as a callback for tests
     :param n: Integer. Compared to 2
-    :return:
+    :return: True if n equals 2. False otherwise
     """
     return n == 2
 
 
 def test_switch():
     """
-    Test ArmedCheckSwitch.switch()
-    :return:
+    armedcheckswitch.py: Test switch()
     """
     s = ArmedCheckSwitch(on_check=is_equal_to_one, off_check=is_equal_to_two)
     assert s.is_switched() == False
@@ -83,8 +80,7 @@ def test_switch():
 
 def test_switch_on_off():
     """
-    Test ArmedCheckSwitch.switch_on() and ArmedCheckSwitch.switch_off()
-    :return:
+    armedcheckswitch.py: Test switch_on() and switch_off()
     """
     s = ArmedCheckSwitch(on_check=is_equal_to_one, off_check=is_equal_to_two)
     assert s.is_switched() == False
@@ -109,8 +105,7 @@ def test_switch_on_off():
 
 def test_arm():
     """
-    Test ArmedCheckSwitch.arm()
-    :return:
+    armedcheckswitch.py: Test arm()
     """
     s = ArmedCheckSwitch()
     assert s.is_armed() == True
@@ -122,8 +117,7 @@ def test_arm():
 
 def test_disarm():
     """
-    Test ArmedCheckSwitch.disarm()
-    :return:
+    armedcheckswitch.py: Test disarm()
     """
     s = ArmedCheckSwitch()
     assert s.is_armed() == True

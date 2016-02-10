@@ -9,8 +9,7 @@ from anchorhub.lib.armedswitch import ArmedSwitch
 
 def test_init_base():
     """
-    Test basic initialization state
-    :return:
+    lib/armedswitch.py: Test basic initialization state
     """
     s = ArmedSwitch()
     assert s.is_switched() == False
@@ -19,8 +18,7 @@ def test_init_base():
 
 def test_init_params():
     """
-    Test initializing ArmedSwitch with different starting values
-    :return:
+    lib/armedswitch.py: Test initializing with different starting values
     """
     s1 = ArmedSwitch(switched=True, armed=False)
     assert s1.is_switched() == True
@@ -41,8 +39,7 @@ def test_init_params():
 
 def test_switch_basic():
     """
-    Test basic ArmedSwitch.switch() functionality
-    :return:
+    lib/armedswitch.py: Test basic switch() functionality
     """
     s = ArmedSwitch()
     assert s.is_switched() == False
@@ -53,8 +50,7 @@ def test_switch_basic():
 
 def test_switch_only_once():
     """
-    Make ArmedSwitch doesn't change twice without re-arming it
-    :return:
+    lib/armedswitch.py: Ensure doesn't change twice without re-arming
     """
     s = ArmedSwitch()
     assert s.is_switched() == False
@@ -65,8 +61,7 @@ def test_switch_only_once():
 
 def test_switch_only_once_loop():
     """
-    ArmedSwitch only switches once during a loop of 100 attempts
-    :return:
+    lib/armedswitch.py: ensure only switches once during a loop of 100 attempts
     """
     s = ArmedSwitch()
     assert s.is_switched() == False
@@ -78,8 +73,7 @@ def test_switch_only_once_loop():
 
 def test_switch_argument():
     """
-    Makes sure ArmedSwitch.switch() arguments work as intended
-    :return:
+    lib/armedswitch.py: Makes sure switch() arguments work as intended
     """
     s1 = ArmedSwitch()
     assert s1.switch(False) == True
@@ -94,8 +88,7 @@ def test_switch_argument():
 
 def test_arm():
     """
-    Test ArmedSwitch.arm()
-    :return:
+    lib/armedswitch.py: Test arm()
     """
     s = ArmedSwitch()
     assert s.switch() == True
@@ -109,8 +102,7 @@ def test_arm():
 
 def test_disarm():
     """
-    Test ArmedSwitch.disarm()
-    :return:
+    lib/armedswitch.py: Test disarm()
     """
     s = ArmedSwitch()
     s.disarm()

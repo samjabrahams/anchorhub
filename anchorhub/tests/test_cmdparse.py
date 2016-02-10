@@ -11,7 +11,7 @@ import anchorhub.settings.default_settings as ds
 
 def test_parse_args():
     """
-    Test cmdparse.parse_args()
+    cmdparse.py: Test parse_args()
 
     The first three sets of assertions check for all the various flag names,
     both the long versions (--flag) and the short versions (-f)
@@ -49,7 +49,7 @@ def test_parse_args():
 
 def test_parse_args_dict():
     """
-    Test cmdparse.parse_args_dict()
+    cmdparse.py: Test parse_args_dict()
 
     The first three sets of assertions check for all the various flag names,
     both the long versions (--flag) and the short versions (-f)
