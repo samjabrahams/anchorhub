@@ -1,7 +1,7 @@
 """
 Functions for validating extensions passed in as arguments to AnchorHub
 """
-
+from anchorhub.exceptions.validationexception import ValidationException
 
 def validate(opts):
     """
@@ -11,8 +11,9 @@ def validate(opts):
     of those things, this will raise a ValueError
 
     :param opts:
-    :raises ValueError: if the extensions fail validations OR if the value
-        passed in is not a list or a namespace with the attribute 'extensions'
+    :raises ValueError: if the value passed in is not a list or a namespace
+        with the attribute 'extensions'
+    :raises ValidationException: if the extensions fail validations
     :return: True if extensions pass the validations
     """
     if hasattr(opts, 'extensions'):
@@ -27,11 +28,11 @@ def validate(opts):
 
 def _validate(extensions):
     """
-    Perform validations on a list of extensions. Will raise a ValueError if
+    Perform validations on a list of extensions. Will raise a ValidationException if
     it finds something wrong.
 
     :param extensions: a list of string extensions
-    :raises ValueError: if the extensions fail any of the validations
+    :raises ValidationException: if the extensions fail any of the validations
     :return: True if the extensions pass the validations
     """
     validate_no_empty_strings(extensions)
@@ -45,14 +46,14 @@ def validate_no_empty_strings(extensions):
     False otherwise.
 
     :param extensions: a list of string extensions
-    :raises ValueError:
+    :raises ValidationException:
     :return: True if no empty strings in list of extensions, raises a
-        ValueError otherwise
+        ValidationException otherwise
     """
     if "" not in extensions:
         return True
     else:
-        raise ValueError("Empty strings are not valid extensions.")
+        raise ValidationException("Empty strings are not valid extensions.")
 
 
 def validate_list_not_empty(extensions):
@@ -60,11 +61,11 @@ def validate_list_not_empty(extensions):
     Returns True if the list provided is not empty. False otherwise
 
     :param extensions: a list of string extensions
-    :raises ValueError:
-    :return: True if extensions list is not empty. Raises a ValueError
+    :raises ValidationException:
+    :return: True if extensions list is not empty. Raises a ValidationException
         otherwise
     """
     if len(extensions) > 0:
         return True
     else:
-        raise ValueError("You must provide at least one extension.")
+        raise ValidationException("You must provide at least one extension.")

@@ -8,7 +8,7 @@ http://www.github.com/samjabrahams/anchorhub/validation/validate_extensions.py
 from nose.tools import *
 
 import anchorhub.validation.validate_extensions as v
-
+from anchorhub.exceptions.validationexception import ValidationException
 
 def test_validate_correct():
     """
@@ -24,23 +24,23 @@ def test_validate_correct():
     assert v.validate(c)
 
 
-@raises(ValueError)
+@raises(ValidationException)
 def test_validate_incorrect_empty_string():
     """
     validate_extensions.py: Test validate() on lists with empty strings
 
-    :raises ValueError: always, if the test is working
+    :raises ValidationException: always, if the test is working
     """
     a = ['.md', '.rst', '']
     assert v.validate(a)
 
 
-@raises(ValueError)
+@raises(ValidationException)
 def test_validate_incorrect_empty_list():
     """
     validate_extensions.py: Test validate() on an empty list
 
-    :raises ValueError: always, if the test is working
+    :raises ValidationException: always, if the test is working
     """
     a = []
     assert v.validate(a)
@@ -69,7 +69,7 @@ def test_validate_correct_namespace():
     assert v.validate(c)
 
 
-@raises(ValueError)
+@raises(ValidationException)
 def test_validate_empty_string_namespace():
     """
     validate_extensions.py: Test validate() on a namespace with an empty string
@@ -77,18 +77,38 @@ def test_validate_empty_string_namespace():
     Try validatign a namespace that has an empty string as part of the list
     under its extensions attribute.
 
-    :raises ValueError: always, if the test is working
+    :raises ValidationException: always, if the test is working
+    """
+    a = ExtSpace(e=['.md', '.rst', ''])
+    assert v.validate(a)
+
+
+@raises(ValidationException)
+def test_validate_empty_array_namespace():
+    """
+    validate_extensions.py: Test validate() on a namespace with empty array
+
+    :raises ValidationException: always, if the test is working
     """
     a = ExtSpace(e=['.md', '.rst', ''])
     assert v.validate(a)
 
 
 @raises(ValueError)
-def test_validate_empty_array_namespace():
+def test_validate_bad_type_string():
     """
-    validate_extensions.py: Test validate() on a namespace with empty array
+    validate_extensions.py: Test validate() with a single string
 
     :raises ValueError: always, if the test is working
     """
-    a = ExtSpace(e=['.md', '.rst', ''])
-    assert v.validate(a)
+    assert v.validate('.md')
+
+
+@raises(ValueError)
+def test_validate_bad_type_number():
+    """
+    validate_extensions.py: Test validate() with a single number
+
+    :raises ValueError: always, if the test is working
+    """
+    assert v.validate(3)
