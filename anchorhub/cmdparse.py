@@ -18,7 +18,7 @@ def parse_args(args=None):
     with parameter names matching the arguments
 
     :param args: List of strings to be parsed as command-line arguments. If
-    none, reads in sys.argv as the values.
+        none, reads in sys.argv as the values.
     :return: a namespace containing arguments values
     """
     if args is None:
@@ -44,7 +44,7 @@ def parse_args_dict(args=None):
     Parse arguments provided as a list of strings, and return a dictionary
     mapping options/flags to provided values
     :param args: List of strings to be parsed as command-line arguments. If
-    none, reads in sys.argv as the values.
+        none, reads in sys.argv as the values.
     :return: a dictionary containing the flags and values as a key/value pair
     """
     return vars(parse_args(args))
