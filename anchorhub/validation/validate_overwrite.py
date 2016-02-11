@@ -53,8 +53,6 @@ def validate_overwrite_different_input_output(opts):
     :return: True if 'overwrite' is set to True, or 'input'/'output' are
         separate directories
     """
-    print(path.abspath(opts.input))
-    print(path.abspath(opts.output))
     if opts.overwrite or path.abspath(opts.input) != path.abspath(opts.output):
         return True
     else:
