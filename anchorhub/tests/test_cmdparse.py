@@ -22,7 +22,7 @@ def test_parse_args():
     pargs = cmd.parse_args(args)
     assert pargs.input == '.'
     assert pargs.output == 'output'
-    assert pargs.extension == ['.md', '.rst']
+    assert pargs.extensions == ['.md', '.rst']
 
     args2 = ['../bears', '-w', '[--> <--]', '-X']
     pargs2 = cmd.parse_args(args2)
@@ -36,7 +36,7 @@ def test_parse_args():
     assert pargs3.input == '.'
     assert pargs3.overwrite == True
     assert pargs3.wrapper == '$$$$ $$$$'
-    assert pargs3.extension == ['.txt', '.fbi', '.wat', '.hub']
+    assert pargs3.extensions == ['.txt', '.fbi', '.wat', '.hub']
 
     args4 = ['.']
     pargs4 = cmd.parse_args(args4)
@@ -44,7 +44,7 @@ def test_parse_args():
     assert pargs4.output == ds.OUTPUT
     assert pargs4.wrapper == ds.WRAPPER
     assert pargs4.overwrite == False
-    assert pargs4.extension == ds.ARGPARSE_EXTENSION['default']
+    assert pargs4.extensions == ds.ARGPARSE_EXTENSION['default']
 
 
 def test_parse_args_dict():
@@ -60,7 +60,7 @@ def test_parse_args_dict():
     pargs = cmd.parse_args_dict(args)
     assert pargs['input'] == '.'
     assert pargs['output'] == 'output'
-    assert pargs['extension'] == ['.md', '.rst']
+    assert pargs['extensions'] == ['.md', '.rst']
 
     args2 = ['../bears', '-w', '[--> <--]', '-X']
     pargs2 = cmd.parse_args_dict(args2)
@@ -74,7 +74,7 @@ def test_parse_args_dict():
     assert pargs3['input'] == '.'
     assert pargs3['overwrite'] == True
     assert pargs3['wrapper'] == '$$$$ $$$$'
-    assert pargs3['extension'] == ['.txt', '.fbi', '.wat', '.hub']
+    assert pargs3['extensions'] == ['.txt', '.fbi', '.wat', '.hub']
 
     args4 = ['.']
     pargs4 = cmd.parse_args_dict(args4)
@@ -82,4 +82,4 @@ def test_parse_args_dict():
     assert pargs4['output'] == ds.OUTPUT
     assert pargs4['wrapper'] == ds.WRAPPER
     assert pargs4['overwrite'] == False
-    assert pargs4['extension'] == ds.ARGPARSE_EXTENSION['default']
+    assert pargs4['extensions'] == ds.ARGPARSE_EXTENSION['default']
