@@ -5,7 +5,8 @@ Command-line entry to AnchorHub, main method is here.
 import anchorhub.cmdparse as cmdparse
 import anchorhub.messages as messages
 import anchorhub.normalization.normalize_opts as normalize_opts
-import anchorhub.validation.validate_opts as validation
+import anchorhub.validation.validate_opts as validate_opts
+import anchorhub.validation.validate_files as validate_files
 from anchorhub.util.getfiles import get_files
 
 
@@ -19,7 +20,7 @@ def main(argv=None):
     """
     # Get command line arguments, validate them, and normalize them
     opts = cmdparse.parse_args(argv)
-    assert validation.validate(opts)
+    assert validate_opts.validate(opts)
     opts = normalize_opts.normalize(opts)
 
     # Update client: print input and output directories
@@ -27,6 +28,10 @@ def main(argv=None):
 
     file_paths = get_files(opts.abs_input, opts.extensions,
                            exclude=[opts.abs_output])
+    assert validate_files.validate(file_paths, opts)
+
+    # Update client: print files that will be parsed
+    messages.print_files(opts, file_paths)
 
 
 if __name__ == '__main__':
