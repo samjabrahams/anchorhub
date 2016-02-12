@@ -4,7 +4,7 @@ Tests for strip_prefix_from_list()
 http://www.github.com/samjabrahams/anchorhub/util/strip_prefix_from_list.py
 """
 
-from anchorhub.util.stripprefixfromlist import strip_prefix_from_list
+from anchorhub.util.stripprefix import strip_prefix_from_list
 
 
 def test_strip_prefix_from_list():
