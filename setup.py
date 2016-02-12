@@ -101,7 +101,7 @@ setup(
     # pip to create the appropriate form of executable for the target platform.
     entry_points={
         'console_scripts': [
-            'anchorhub=anchorhub.main:main'
+            'anchorhub = anchorhub.main:main'
         ]
     },
 )

@@ -10,7 +10,7 @@ import anchorhub.validation.validate_files as validate_files
 from anchorhub.util.getfiles import get_files
 
 
-def main(argv=None):
+def main():
     """
     Main entry method for AnchorHub. Takes in command-line arguments,
     finds files to parse within the specified input directory, and outputs
