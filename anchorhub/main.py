@@ -6,6 +6,7 @@ import anchorhub.cmdparse as cmdparse
 import anchorhub.messages as messages
 import anchorhub.normalization.normalize_opts as normalize_opts
 import anchorhub.validation.validate_opts as validation
+from anchorhub.util.getfiles import get_files
 
 
 def main(argv=None):
@@ -23,6 +24,11 @@ def main(argv=None):
 
     # Update client: print input and output directories
     messages.print_directories(opts)
+
+    file_paths = get_files(opts.abs_input, opts.extensions,
+                           exclude=[opts.abs_output])
+
+    print file_paths
 
 if __name__ == '__main__':
     main()
