@@ -28,6 +28,13 @@ def print_files(opts, file_paths):
 
 
 def print_no_files_found(opts):
+    """
+    Prints message that no files were found in the input directory with the
+    given list of extensions.
+
+    :param opts: Namespace object created from command-line arguments. Must
+    have the attributes 'extensions' and 'input'
+    """
     msg =  "No files found with [" +', '.join(opts.extensions) + "] "
     msg += "extension" +("s " if len(opts.extensions) > 1 else " ")
     msg += "in " + opts.input
