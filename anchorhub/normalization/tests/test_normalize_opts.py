@@ -37,8 +37,8 @@ def test_normalize():
     assert a.output == 'anchorhub-out' + get_path_separator()
     assert a.open == '{'
     assert a.close == '}'
-    assert a.abs_input == path.abspath(a.input)
-    assert a.abs_output == path.abspath(a.output)
+    assert a.abs_input == path.abspath(a.input) + get_path_separator()
+    assert a.abs_output == path.abspath(a.output) + get_path_separator()
 
 
 def test_abs_path_directories():
@@ -50,8 +50,8 @@ def test_abs_path_directories():
     n.add_abs_path_directories(a)
     assert 'abs_input' in a
     assert 'abs_output' in a
-    assert a['abs_input'] == path.abspath('.')
-    assert a['abs_output'] == path.abspath('anchorhub-out')
+    assert a['abs_input'] == path.abspath('.') + get_path_separator()
+    assert a['abs_output'] == path.abspath('anchorhub-out')+get_path_separator()
 
 
 def test_add_open_close_wrapper():
