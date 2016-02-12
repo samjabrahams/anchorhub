@@ -18,6 +18,9 @@ def main():
 
     :param argv: a list of string command line arguments
     """
+
+    argv = None
+
     # Get command line arguments, validate them, and normalize them
     opts = cmdparse.parse_args(argv)
     assert validate_opts.validate(opts)
