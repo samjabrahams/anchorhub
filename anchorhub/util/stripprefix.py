@@ -15,7 +15,7 @@ def strip_prefix(string, strip):
     import re
     strip_esc = re.escape(strip)
     if re.match(strip_esc, string):
-        return string[len(strip) + 1:]
+        return string[len(strip):]
     else:
         return string
 
