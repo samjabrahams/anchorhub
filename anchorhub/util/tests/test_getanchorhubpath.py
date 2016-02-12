@@ -3,6 +3,7 @@ Tests for getanchorhubpath.py
 
 http://www.github.com/samjabrahams/anchorhub/util/getanchorhubpath.py
 """
+
 import os.path as path
 from anchorhub.util.getanchorhubpath import get_anchorhub_path
 from anchorhub.compatibility import get_path_separator
