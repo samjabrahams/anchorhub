@@ -9,7 +9,6 @@ from nose.tools import *
 import anchorhub.main as main
 
 
-@raises(SystemExit)
 def test_one():
     """
     main.py: Test defaults with local directory as input.
