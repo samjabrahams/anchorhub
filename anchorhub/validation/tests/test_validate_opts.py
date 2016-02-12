@@ -37,19 +37,19 @@ def test_validate_good():
 
     a = OptObj(input='.', output='anchorhub-out', wrapper='{ }',
                extensions=['.md'], overwrite=False)
-    assert v.validate(a)
+    assert v._validate(a)
 
     b = OptObj(input='.', output='.', wrapper='{ }',
                extensions=['.md'], overwrite=True)
-    assert v.validate(b)
+    assert v._validate(b)
 
     c = OptObj(input='.', output='anchorhub-out', wrapper='[--> ????',
                extensions=['.md'], overwrite=False)
-    assert v.validate(c)
+    assert v._validate(c)
 
     d = OptObj(input='.', output='anchorhub-out', wrapper='{ }',
                extensions=['.md', '.rst', '.hub'], overwrite=False)
-    assert v.validate(d)
+    assert v._validate(d)
 
 
 @raises(ValidationException)
@@ -59,7 +59,7 @@ def test_validate_bad_overwrite():
     """
     a = OptObj(input='.', output='.', wrapper='{ }', extensions=['.md'],
                overwrite=False)
-    assert v.validate(a)
+    assert v._validate(a)
 
 
 @raises(ValidationException)
@@ -69,7 +69,7 @@ def test_validate_bad_wrapper():
     """
     a = OptObj(input='.', output='anchorhub-out', wrapper='{ } { }',
                extensions=['.md'], overwrite=False)
-    assert v.validate(a)
+    assert v._validate(a)
 
 
 @raises(ValidationException)
@@ -79,7 +79,7 @@ def test_validate_bad_extensions():
     """
     a = OptObj(input='.', output='anchorhub-out', wrapper='{ }',
                extensions=['.md', '', '.rst'], overwrite=False)
-    assert v.validate(a)
+    assert v._validate(a)
 
 
 @raises(ValueError)
@@ -89,5 +89,5 @@ def test_validate_bad_opt():
     """
     a = OptObj(input='.', output='anchorhub-out', wrapper='{ }',
                overwrite=False)
-    assert v.validate(a)
+    assert v._validate(a)
 

@@ -28,7 +28,6 @@ def main(argv=None):
     file_paths = get_files(opts.abs_input, opts.extensions,
                            exclude=[opts.abs_output])
 
-    print file_paths
 
 if __name__ == '__main__':
     main()
