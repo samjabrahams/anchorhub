@@ -10,7 +10,7 @@ import anchorhub.validation.validate_files as validate_files
 from anchorhub.util.getfiles import get_files
 
 
-def main():
+def main(argv=None):
     """
     Main entry method for AnchorHub. Takes in command-line arguments,
     finds files to parse within the specified input directory, and outputs
@@ -18,9 +18,6 @@ def main():
 
     :param argv: a list of string command line arguments
     """
-
-    argv = None
-
     # Get command line arguments, validate them, and normalize them
     opts = cmdparse.parse_args(argv)
     assert validate_opts.validate(opts)

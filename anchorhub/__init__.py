@@ -6,5 +6,5 @@ __all__ = ['__version__']
 
 # AnchorHub version
 import pkgutil
-__version__ = pkgutil.get_data(__package__, 'VERSION').decode('ascii').strip()
+__version__ = pkgutil.get_data('anchorhub', 'VERSION').decode('ascii').strip()
 del pkgutil
