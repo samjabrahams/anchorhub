@@ -1,6 +1,7 @@
 """
 validate_opts.py - Functions for validating parsed command line arguments.
 """
+import sys
 
 import anchorhub.validation.validate_extensions as ve
 import anchorhub.validation.validate_overwrite as vo
@@ -29,12 +30,19 @@ def validate(opts):
     :raises ValueError: if opts is not a namespace with the correct parameters
     :return: True, if all tests are successful
     """
-    if all([ve.validate(opts),
-            vw.validate(opts),
-            vo.validate(opts)]):
-        return True
-    else:
-        raise ValidationException("Validation tests failed. Check your inputs.")
+    try:
+        if all([ve.validate(opts),
+                vw.validate(opts),
+                vo.validate(opts)]):
+            return True
+    except ValidationException as e:
+        print("Command line arguments failed validation:\n")
+        print(e)
+        sys.exit(0)
+    except ValueError as e:
+        print("Incorrect type passed into anchorhub.validate_opts.validate()\n")
+        print(e)
+        sys.exit(0)
 
 
 
