@@ -14,5 +14,4 @@ def test_get_anchorhub_path_directory():
     """
     path = get_anchorhub_path()
     dir = path[path.rfind(get_path_separator()) + 1:]
-    print dir
     assert dir == 'anchorhub'
