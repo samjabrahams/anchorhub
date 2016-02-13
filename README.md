@@ -26,7 +26,7 @@ $ pip install anchorhub
 
 ## Quick Start Guide 
 
-Inside your Markdown files, define and use header anchors like the following:
+Inside your Markdown files, define and use AnchorHub tags like the following:
 
 ```markdown
 # This is a header that I would like to make an id for {#head}
@@ -54,12 +54,12 @@ This section goes over how to write your Markdown files in order to utilize Anch
 2. [Using those anchors in links](#link-syntax)
 3. [Processing files with the `anchorhub` command line interface](#anchorhubs-command-line-interface)
 
-## Defining Anchors 
+## Defining AnchorHub Tags 
 
-Place identifiers with a leading '#' inside of `{ }` wrappers at end of header lines you'd like to reference. For example:
+Place identifiers with a leading '#' inside of `{ }` wrappers at end of header lines you'd like to link to. For example:
 
 ```markdown
-# This is the header I'd like to create an anchor for {#head}
+# This is the header I'd like to create an anchor for {#tag}
 ```
 
 _Note: You can specify your own style of wrappers if `{ }` braces don't suit your needs. [See below]() for an example._
@@ -69,10 +69,10 @@ _Note: You can specify your own style of wrappers if `{ }` braces don't suit you
 Write links to your specified anchors as if you had created an HTML element with an `id` or `name` parameter:
 
 ```markdown
-In the middle of this sentence, I'd like to link back to [the header specified above](#head)
+In the middle of this sentence, I'd like to link back to [the header specified above](#tag)
 ```
 
-AnchorHub automatically automatically works for all files within a directory tree, so if you had a file named 'other.md' with '#ref' defined as an anchor, you can link to it from your original file without any additional effort:
+AnchorHub automatically automatically works for all files within a directory tree, so if you had a file named 'other.md' with '#ref' defined as an AnchorHub tag, you can link to it from your original file without any additional effort:
 
 ```markdown
 Let's link to that [other file's anchor!](other.md#ref)
@@ -133,7 +133,7 @@ The default value is `".md"`. You can provide multiple extensions if you have fi
 $ anchorhub ./input -e .md .markdown .MD 
 ```
 
-**-w / --wrapper:** Specify the wrapper syntax for defining anchors
+**-w / --wrapper:** Specify the wrapper syntax for defining AnchorHub tags
 
 The default value is `"{ }"`. Make sure you have a space between your opening and closing patterns and to wrap the whole thing in quotation marks:
 
@@ -180,7 +180,7 @@ Skip to features header with [this link!](#here-is-my-feature-list).
 
 ### Multi-file 
 
-AnchorHub automatically looks at the entire directory tree when checking for anchor matches, so you can link to other documents in the same fashion. Each file has its own distinct set of anchors, so you can reuse the same tags on different pages. Here's a super simple demonstration below:
+AnchorHub automatically looks at the entire directory tree when checking for AnchorHub tag matches, so you can link to other documents in the same fashion. Here's a super simple demonstration below:
 
 #### Input
 
@@ -213,6 +213,8 @@ dir/file2.md
 # The awesome header in file2.md 
 [Link back to file1.md](../file1.md#some-header-for-this-file)
 ```
+
+ AnchorHub maintains a distinct set of tags for each file, so you can reuse tag names on different pages.
 
 ## To-do List 
 

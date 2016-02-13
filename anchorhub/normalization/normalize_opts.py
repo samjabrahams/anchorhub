@@ -41,7 +41,7 @@ def add_abs_path_directories(opts_dict):
 def add_open_close_wrappers(opts_dict):
     """
     Adds 'open' and 'close' to opts_dict. 'open' indicates the opening
-    portion of the anchor-indicating wrapper, and 'close' is the closing
+    portion of the AnchorHub tag-indicating wrapper, and 'close' is the closing
     portion.
 
     :param opts_dict: dictionary that will be modified
