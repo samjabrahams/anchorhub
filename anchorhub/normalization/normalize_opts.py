@@ -23,6 +23,7 @@ def normalize(opts):
     ensure_directories_end_in_separator(opts_dict)
     add_abs_path_directories(opts_dict)
     add_open_close_wrappers(opts_dict)
+    add_wrapper_regex(opts_dict)
     return Bunch(opts_dict)
 
 
