@@ -3,6 +3,7 @@ normalize_opts.py - Functions to prepare command line arguments for
 validation and use.
 """
 import os.path as path
+import re
 
 from anchorhub.lib.bunch import Bunch
 from anchorhub.util.addsuffix import add_suffix
@@ -69,3 +70,40 @@ def assert_has_input_output(opts_dict):
     """
     assert 'input' in opts_dict
     assert 'output' in opts_dict
+
+
+def add_wrapper_regex(opts_dict):
+    """
+    Adds the regular expression for the specified wrapper to opts_dict. It
+    is assumed the dictionary has the keys 'open' and 'close'
+
+    The regular expression will match the following, in order:
+
+    1. The wrapper 'open' pattern
+    2. Followed by any amount of white space (or none)
+    3. Followed by a '#' character
+    4. Followed by one or more non-whitespace characters, but _not_ matching
+    the wrapper 'open' pattern, or the wrapper 'close' pattern
+    5. Followed by any amount of white space (or none)
+    6. Followed by the wrapper 'close' pattern
+
+    For example, it would match the following string, assuming the default
+    curly brace wrapper pattern:
+    '{ #tag }'
+
+    But it would _not_ match this:
+    '{{ #tag }}'
+    :param opts_dict: Dictionary that will be modified.
+    """
+    opn = re.escape(opts_dict['open'])
+    close = re.escape(opts_dict['close'])
+
+    p = opn         # The opening pattern
+    p += r"\s*"     # Any amount of white space
+    p += r"#"       # Hash '#' sign
+    # 1+ non-whitespace characters that don't make the open or close pattern
+    p += r"((?!" + opn + r")(?!" + close +")\S)+"
+    p += r"\s*"     # Any amount of white space
+    p += close      # The closing pattern
+
+    opts_dict['wrapper_regex'] = p

@@ -80,3 +80,13 @@ def test_ensure_directories_end_in_separator():
     n.ensure_directories_end_in_separator(b)
     assert b['input'] == 'hello' + get_path_separator()
     assert b['output'] == 'dolly' + get_path_separator()
+
+
+def test_add_wrapper_regex():
+    """
+    normalize_opts.py: Test add_wrapper_regex()
+    """
+    a = {'open': '{', 'close': '}'}
+    n.add_wrapper_regex(a)
+    assert 'wrapper_regex' in a
+    assert a['wrapper_regex'] == r"\{\s*#((?!\{)(?!\})\S)+\s*\}"
