@@ -36,7 +36,7 @@ class ArmedCheckSwitch(object):
         self.on_check = on_check
         self.off_check = off_check
 
-    def switch(self, **kwargs):
+    def switch(self, *args):
         """
         Method that attempts to change the switch to the opposite of its
         current state. Calls either switch_on() or switch_off() to accomplish
@@ -47,11 +47,11 @@ class ArmedCheckSwitch(object):
         :return: Boolean. Returns True if the switch changes state
         """
         if self.is_switched():
-            return self.switch_off(**kwargs)
+            return self.switch_off(*args)
         else:
-            return self.switch_on(**kwargs)
+            return self.switch_on(*args)
 
-    def switch_on(self, **kwargs):
+    def switch_on(self, *args):
         """
         Sets the state of the switch to True if on_check() returns True,
         given the arguments provided in kwargs.
@@ -59,12 +59,12 @@ class ArmedCheckSwitch(object):
         :param kwargs: variable length dictionary of key-pair arguments
         :return: Boolean. Returns True if the operation is successful
         """
-        if self.on_check(**kwargs):
+        if self.on_check(*args):
             return self._switch.switch(True)
         else:
             return False
 
-    def switch_off(self, **kwargs):
+    def switch_off(self, *args):
         """
         Sets the state of the switch to False if off_check() returns True,
         given the arguments provided in kwargs.
@@ -72,7 +72,7 @@ class ArmedCheckSwitch(object):
         :param kwargs: variable length dictionary of key-pair arguments
         :return: Boolean. Returns True if the operation is successful
         """
-        if self.off_check(**kwargs):
+        if self.off_check(*args):
             return self._switch.switch(False)
         else:
             return False
