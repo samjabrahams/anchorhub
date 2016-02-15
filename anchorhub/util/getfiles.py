@@ -5,6 +5,7 @@ import os
 import glob
 
 from anchorhub.compatibility import get_path_separator
+from anchorhub.util.addsuffix import add_suffix
 
 
 def get_files(dir, exts, exclude=None, recursive=True):
@@ -29,7 +30,10 @@ def get_files(dir, exts, exclude=None, recursive=True):
     file_paths =[]
     if recursive:
         for root, _, _ in os.walk(dir):
+            # os.walk() does not add path separator by default to end of path
+            root = add_suffix(root, get_path_separator())
             if exclude is not None and is_dir_inside(root, exclude):
+                # Skip directories that are in the exclude list
                 continue
             file_paths.extend(get_files_in_dir(root, *exts))
     else:
@@ -51,7 +55,7 @@ def get_files_in_dir(dir, *exts):
     if exts is None:
         exts = ['']
     for ext in exts:
-        file_paths.extend(glob.glob(dir + get_path_separator() + '*' + ext))
+        file_paths.extend(glob.glob(dir + '*' + ext))
     return file_paths
 
 
