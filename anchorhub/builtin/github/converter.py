@@ -1,7 +1,6 @@
 """
 File for GitHub style anchor generation
 """
-
 import re
 
 
