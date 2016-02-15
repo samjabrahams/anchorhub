@@ -4,6 +4,8 @@ The link on this line [should change](#link)
 
 ``` [This should not change](#link)
 
+# Fakeout header line {#fakefakefake}
+
 [None of this should change](#link)
 
 ``` Fake out, not really the end of the code block
