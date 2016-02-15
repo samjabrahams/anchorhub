@@ -142,9 +142,8 @@ class CollectorStrategy(object):
         Abstract method. Should return True when there is a defined AnchorHub
         tag on the given line.
 
-        :param file_lines: List of string lines in a text file
-        :param index: The index in file_lines that points to the current line
-            being examined
+        :param file_lines: List of strings corresponding to lines in a text file
+        :param index: index of file_lines corresponding to the current line
         :return: True if the string in file_lines at index i points to a
             valid AnchorHub tag
         """
@@ -155,11 +154,13 @@ class CollectorStrategy(object):
         """
         Abstract method. Extracts the AnchorHub tag from the line, as well as
         the portion of the line that should be converted into an anchor.
-        Should return a dictionary key-value pair with the tag as the key and
-        the portion that should be converted as the value.
+        Should return a list of two strings- the first entry being the
+        AnchorHub tag specified in the file, and the second entry being the
+        portion of the line that should be converted into an anchor.
 
-        :param file_lines:
-        :param index:
-        :return:
+        :param file_lines: List of strings corresponding to lines in a text file
+        :param index: index of file_lines corresponding to the current line
+        :return: [tag, string] - tag: the extracted AnchorHub tag. string -
+            the portion of the line that should be converted into an anchor
         """
         pass
