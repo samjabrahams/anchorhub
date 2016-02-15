@@ -43,18 +43,36 @@ class Collector(object):
         self._strategies = strategies
         self._switches = switches
         self._anchors = {}
-        self._duplicate_anchors = {}
+        self._duplicate_tags = {}
         self.has_duplicates = False
 
     def collect(self, file_paths):
         """
-        Client facing method. It takes in a list of string file_paths, and
+        Takes in a list of string file_paths, and parses through them using
+        the converter, strategies, and switches defined at object
+        initialization.
+
+        It returns two dictionaries- the first maps from
+        file_path strings to inner dictionaries, and those inner dictionaries
+        map from AnchorHub tag to converted anchors.
+
+        The second dictionary maps file_paths to lists. Each entry on the
+        list corresponds to a duplicate tag found in the file. The entries
+        are lists with the following information: [tag, line_number,
+        previous-anchor-used]
+
         :param file_paths:
-        :return: Dictionary, mapping file string file paths to dictionaries.
-            These inner dictionaries map AnchorHub tags to generated anchors.
+        :return: Two dictionaries. The first maps string file paths to
+            dictionaries. These inner dictionaries map AnchorHub tags to
+            generated anchors. The second dictionary maps file paths to lists
+            containing information about duplicate tags found on each page.
         """
         for file_path in file_paths:
-            self._anchors[file_path] = self.collect_single_file(file_path)
+            self._anchors[file_path], d = self.collect_single_file(file_path)
+            if len(d) > 0:
+                # There were duplicates found in the file
+                self._duplicate_tags[file_path] = d
+        return self._anchors, self._duplicate_tags
 
     def collect_single_file(self, file_path):
         """
@@ -62,11 +80,16 @@ class Collector(object):
         and collects the AnchorHub tags and auto-generated anchors for the
         file according to the  Collector's converter, strategies, and switches
 
+
+
         :param lines: List of strings.
-        :return: A dictionary mapping AnchorHub tags to auto-generated anchors
+        :return: A dictionary mapping AnchorHub tags to auto-generated
+            anchors, and a list of containing an entry for each duplicate tag
+            found on the page.
         """
         lines = FileToList.to_list(file_path)
         file_anchors = {}
+        file_duplicates = []
         for i in range(len(lines)):
             # Flip any switches that are triggered by this line
             self._try_switches(lines, i)
@@ -74,16 +97,16 @@ class Collector(object):
                 for s in self._strategies:
                     if s.test(lines, i):
                         # This strategy found an anchor and knows how to parse
-                        tag, convert_me = s.get(lines, i, file_anchors)
+                        tag, convert_me = s.get(lines, i)
                         if tag in file_anchors:
                             # Duplicate tag
-                            self._handle_duplicate(file_path, i, tag,
-                                                   convert_me, file_anchors)
+                            file_duplicates.append([tag, i + 1,
+                                                    file_anchors[tag]])
                         else:
                             anchor = self._converter(convert_me, file_anchors)
                             file_anchors[tag] = anchor
             self._arm_switches()
-        return file_anchors
+        return file_anchors, file_duplicates
 
     def _try_switches(self, lines, index):
         """
@@ -114,20 +137,6 @@ class Collector(object):
         :return: True if no _switches are set to True in the Collector object
         """
         return not any(s.is_switched() for s in self._switches)
-
-    def _handle_duplicate(self, file_path, index, tag, line, file_anchors):
-        """
-        Places properly formatted duplicate list into self._duplicate_anchors
-        dictionary.
-
-        These lists will be read off after reading all files, and displayed
-        to the client as an error message with details on how to fix the
-        problems.
-        """
-        if file_path not in self._duplicate_anchors:
-            duplicate_anchors[file_path] = []
-        duplicate_anchors[file_path].append([line, index + 1,
-                                             file_anchors[tag]])
 
 
 class CollectorStrategy(object):
