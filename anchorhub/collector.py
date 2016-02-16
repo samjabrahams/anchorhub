@@ -36,7 +36,7 @@ class Collector(object):
 
         :param converter: function that takes in a string line of text and
         list of existing tag/anchor pairs, and outputs a generated anchor string
-        :param strategies: a list of collection strategy objects
+        :param strategies: a list of concrete CollectorStrategy objects
         :param switches: a list of ArmedCheckSwitches
         """
         self._converter = converter
@@ -153,7 +153,7 @@ class CollectorStrategy(object):
 
         :param file_lines: List of strings corresponding to lines in a text file
         :param index: index of file_lines corresponding to the current line
-        :return: True if the string in file_lines at index i points to a
+        :return: True if the string in file_lines[index] points to a
             valid AnchorHub tag
         """
         pass
