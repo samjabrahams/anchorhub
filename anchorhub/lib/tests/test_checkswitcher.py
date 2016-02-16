@@ -63,18 +63,18 @@ def test_switch():
     s = ArmedCheckSwitch(on_check=is_equal_to_one, off_check=is_equal_to_two)
     assert s.is_switched() == False
 
-    assert s.switch(n=4) == False
+    assert s.switch(4) == False
     assert s.is_switched() == False
 
-    assert s.switch(n=1) == True
+    assert s.switch(1) == True
     assert s.is_switched() == True
 
     # Should need to re-arm before switching again
-    assert s.switch(n=2) == False
+    assert s.switch(2) == False
     assert s.is_switched() == True
 
     s.arm()
-    assert s.switch(n=2) == True
+    assert s.switch(2) == True
     assert s.is_switched() == False
 
 
@@ -85,21 +85,21 @@ def test_switch_on_off():
     s = ArmedCheckSwitch(on_check=is_equal_to_one, off_check=is_equal_to_two)
     assert s.is_switched() == False
 
-    assert s.switch_on(n=3) == False
+    assert s.switch_on(3) == False
     assert s.is_switched() == False
 
-    assert s.switch_on(n=1) == True
+    assert s.switch_on(1) == True
     assert s.is_switched() == True
 
-    assert s.switch_off(n=1) == False
+    assert s.switch_off(1) == False
     assert s.is_switched() == True
 
     # Should need to re-arm the switch to turn it off
-    assert s.switch_off(n=2) == False
+    assert s.switch_off(2) == False
     assert s.is_switched() == True
 
     s.arm()
-    assert s.switch_off(n=2) == True
+    assert s.switch_off(2) == True
     assert s.is_switched() == False
 
 
