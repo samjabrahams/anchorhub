@@ -3,7 +3,6 @@ Concrete CollectorStrategy classes for the GitHub built-in module
 """
 import re
 
-import anchorhub.builtin.regex.markdown as mdrx
 from anchorhub.collector import CollectorStrategy
 
 
