@@ -55,6 +55,16 @@ anchor_link += r"\)"        # A closing parenthesis ')'
 
 
 """
+anchor_link_start: The first portion of an inline link, before the URL
+
+Useful for getting the string indices of different parts of the link.
+
+See steps 1-3 of 'anchor_link' above for specifics on the regular expression
+components.
+"""
+anchor_link_start = r"\[.+\]\s*\("
+
+"""
 reference_link: Markdown reference link that uses an anchor tag
 
 Has the following specification:
