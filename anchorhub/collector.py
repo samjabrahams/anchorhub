@@ -142,7 +142,7 @@ class Collector(object):
 class CollectorStrategy(object):
     __metaclass__ = ABCMeta
 
-    def __init__(self):
+    def __init__(self, opts):
         pass
 
     @abstractmethod
