@@ -25,11 +25,10 @@ class MarkdownATXCollectorStrategy(CollectorStrategy):
         :param opts: Namespace with the attribute 'wrapper_pattern',
             typically obtained through command-line argument parsing
         """
-        super(MarkdownATXCollectorStrategy, self).__init__()
         self._open = opts.open
         self._close = opts.close
         self._header_pattern = r"^#+ .+" + opts.wrapper_regex + r"\s*$"
-        self._regex = re.compile(self._header_pattern)
+        self._regex = re.compile(self._header_pattern, re.UNICODE)
 
     def test(self, file_lines, index):
         """
