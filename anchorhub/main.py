@@ -9,6 +9,7 @@ import anchorhub.validation.validate_opts as validate_opts
 import anchorhub.validation.validate_files as validate_files
 from anchorhub.util.getfiles import get_files
 from anchorhub.builtin.github.collector import make_github_markdown_collector
+from anchorhub.builtin.github.writer import make_github_markdown_writer
 
 
 def main(argv=None):
@@ -39,6 +40,9 @@ def main(argv=None):
     collector = make_github_markdown_collector(opts)
     anchors, duplicate_tags = collector.collect(file_paths)
 
+    # Write
+    writer = make_github_markdown_writer(opts)
+    writer.write(file_paths, anchors, opts)
 
 if __name__ == '__main__':
     main()
