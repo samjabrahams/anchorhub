@@ -95,7 +95,7 @@ class Writer(object):
         """
         f = open(file_path, 'wb')
         for i in range(len(lines)):
-            f.write(bytes(lines[i]))
+            f.write(bytes(lines[i]), 'UTF-8')
         f.close()
 
     def _create_dirs_if_necessary(self, path):
