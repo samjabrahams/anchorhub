@@ -68,6 +68,9 @@ What this strategy does is convert a header from this:
         # space
         return current_modified_line[:open_wrapper_index - 1] + "\n"
 
+    def get_label(self):
+        return "ATX headers"
+
 
 class MarkdownSetextWriterStrategy(WriterStrategy):
     """
@@ -160,6 +163,9 @@ class MarkdownSetextWriterStrategy(WriterStrategy):
         # space
         return current_modified_line[:open_wrapper_index - 1] + "\n"
 
+    def get_label(self):
+        return "Setext headers"
+
 
 class MarkdownInlineLinkWriterStrategy(WriterStrategy):
     """
@@ -246,6 +252,9 @@ class MarkdownInlineLinkWriterStrategy(WriterStrategy):
         # Add the end of the line back on
         changed_line += current_modified_line[last_index:]
         return changed_line
+
+    def get_label(self):
+        return "inline links"
 
     def _get_file_key(self, file_path, link_path):
         """
@@ -357,6 +366,9 @@ class MarkdownReferenceLinkWriterStrategy(WriterStrategy):
         else:
             # The tag used is not an AnchorHub tag: don't change it
             return current_modified_line
+
+    def get_label(self):
+        return "reference links"
 
     def _get_file_key(self, file_path, link_path):
         """
