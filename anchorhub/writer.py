@@ -3,6 +3,7 @@ Class file for the AnchorHub Writer
 """
 import os
 import os.path
+import sys
 from abc import ABCMeta, abstractmethod
 
 from anchorhub.lib.filetolist import FileToList
@@ -95,7 +96,10 @@ class Writer(object):
         """
         f = open(file_path, 'wb')
         for i in range(len(lines)):
-            f.write(bytes(lines[i]), 'UTF-8')
+            if sys.version >= (3,1):
+                f.write(bytes(lines[i], "UTF-8"))
+            else:
+                f.write(lines[i])
         f.close()
 
     def _create_dirs_if_necessary(self, path):
