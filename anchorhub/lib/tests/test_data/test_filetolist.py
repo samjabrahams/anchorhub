@@ -13,5 +13,5 @@ def test_file_to_list_basic():
     sep = get_path_separator()
     path = get_anchorhub_path() + sep + 'lib' + sep + 'tests' + sep + \
            'test_data' + sep + 'filelist'
-    assert FileToList.to_list(path) == ['Hello!\n', 'My name\n', 'is\n',
+    assert FileToList.to_list(path) == ['Hello!\n', 'My name\n', 'is\n', \
                                         'AnchorHub']
