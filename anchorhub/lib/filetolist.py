@@ -19,7 +19,7 @@ class FileToList(object):
         to lines in the file pointed to in file_path
         """
         l = []
-        f = open(file_path, 'rb')
+        f = open(file_path, 'r')
         for line in f:
             l.append(line)
         f.close()
