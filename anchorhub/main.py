@@ -42,7 +42,13 @@ def main(argv=None):
 
     # Write
     writer = make_github_markdown_writer(opts)
-    writer.write(file_paths, anchors, opts)
+    counter = writer.write(file_paths, anchors, opts)
+
+    # Update client: print files that had modifications
+    messages.print_modified_files(anchors)
+
+    # Print summary statistics
+    messages.print_summary_stats(counter)
 
 if __name__ == '__main__':
     main()
