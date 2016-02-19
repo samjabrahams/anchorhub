@@ -4,7 +4,8 @@ File that initializes a Writer object designed for GitHub style markdown files.
 
 from anchorhub.writer import Writer
 from anchorhub.builtin.github.wstrategies import MarkdownATXWriterStrategy, \
-    MarkdownSetextWriterStrategy, MarkdownInlineLinkWriterStrategy
+    MarkdownSetextWriterStrategy, MarkdownInlineLinkWriterStrategy, \
+    MarkdownReferenceLinkWriterStrategy
 import anchorhub.builtin.github.switches as ghswitches
 
 
@@ -22,9 +23,10 @@ def make_github_markdown_writer(opts):
     atx = MarkdownATXWriterStrategy(opts)
     setext = MarkdownSetextWriterStrategy(opts)
     inline = MarkdownInlineLinkWriterStrategy(opts)
+    ref = MarkdownReferenceLinkWriterStrategy(opts)
     code_block_switch = ghswitches.code_block_switch
 
-    strategies = [atx, setext, inline]
+    strategies = [atx, setext, inline, ref]
     switches = [code_block_switch]
 
     return Writer(strategies, switches=switches)
