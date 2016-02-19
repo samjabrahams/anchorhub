@@ -26,7 +26,9 @@ class Writer(object):
         """
         self._strategies = strategies  # List of concrete WriterStrategy objs
         self._switches = switches  # List of ArmedTestSwitch objects
-        self._counter = [0] * len(strategies)  # Count strategy use
+        self._counter = []
+        for s in self._strategies:
+            self._counter.append([0, s.get_label()])
 
     def write(self, file_paths, anchors, opts):
         """
@@ -65,7 +67,7 @@ class Writer(object):
                         if modified_line != mod:
                             # Strategy modified the line
                             modified_line = mod
-                            self._counter[n] += 1  # Increment strategy counter
+                            self._counter[n][0] += 1  # Strategy counter +1
                             file_is_modified = True  # Must rewrite this file
             new_text.append(modified_line)
         if file_is_modified:
@@ -187,3 +189,12 @@ class WriterStrategy(object):
         :return: String of the line after modifications
         """
         pass
+
+    @abstractmethod
+    def get_label(self):
+        """
+        Should return a string label describing what this WriterStrategy
+        modifies. Used to print summary statistics at the end.
+
+        :return: string label describing what this WriterStrategy modifies
+        """
