@@ -16,4 +16,5 @@ def test_one():
     main.py: Test defaults with local directory as input.
     """
     main.main([get_anchorhub_path() + get_path_separator() +
-               '../sample/multi-file'])
+               '../sample/multi-file', get_anchorhub_path() +
+               get_path_separator() + 'tests/anchorhub-out'])
