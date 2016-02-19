@@ -58,7 +58,7 @@ class Writer(object):
             self._try_switches(lines, i)
             if self._no_switches_on():
                 for n, s in enumerate(self._strategies):
-                    if s.test(modified_line):
+                    if s.test(modified_line, lines, i):
                         # Strategy detected that it may modify this line
                         mod = s.modify(modified_line, anchors, file_path)
                         if modified_line != mod:
@@ -95,7 +95,7 @@ class Writer(object):
         """
         f = open(file_path, 'wb')
         for i in range(len(lines)):
-            f.write(lines[i])
+            f.write(bytes(lines[i]))
         f.close()
 
     def _create_dirs_if_necessary(self, path):
