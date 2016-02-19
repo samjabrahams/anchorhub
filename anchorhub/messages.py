@@ -41,3 +41,32 @@ def print_no_files_found(opts):
     # if recursive
     msg += " or any of its subdirectories"
     print(msg)
+
+
+def print_modified_files(anchors):
+    """
+    Prints out which files were modified amongst those looked at
+
+    :param anchors: Dictionary mapping file path strings to dictionaries
+        containing AnchorHub tag/generated header key-value pairs
+    """
+    print("Files with modifications:")
+    for file_path in anchors:
+        print("  " + file_path)
+    print("")
+
+
+def print_summary_stats(counter):
+    """
+    Prints summary statistics about which writer strategies were used,
+    and how much they were used.
+
+    :param counter: A list of lists. The first entry on the inner list is a
+        number count of how many times a WriterStrategy was used, and the
+        second entry is a string label describing the WriterStrategy
+    """
+    sum = 0
+    for c in counter:
+        print("Total " + c[1] + " modified:\t" + str(c[0]))
+        sum += c[0]
+    print("total modifications: \t\t" + str(sum))
