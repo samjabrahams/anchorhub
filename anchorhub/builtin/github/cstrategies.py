@@ -122,9 +122,8 @@ class MarkdownSetextCollectorStrategy(CollectorStrategy):
         # Since it needs an underline, cannot be a header
         index_in_bounds = index < len(file_lines) - 1
 
-        if (self._header_regex.search(file_lines[index]) and
-                self._underline_regex.match(file_lines[index+1]) and
-                index_in_bounds):
+        if (index_in_bounds and self._header_regex.search(file_lines[index]) and
+                self._underline_regex.match(file_lines[index+1])):
             return True
         else:
             return False
