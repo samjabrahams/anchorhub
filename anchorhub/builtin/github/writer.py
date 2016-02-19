@@ -20,10 +20,11 @@ def make_github_markdown_writer(opts):
     """
     assert hasattr(opts, 'wrapper_regex')
     atx = MarkdownATXWriterStrategy(opts)
+    setext = MarkdownSetextWriterStrategy(opts)
     inline = MarkdownInlineLinkWriterStrategy(opts)
     code_block_switch = ghswitches.code_block_switch
 
-    strategies = [atx, inline]
+    strategies = [atx, setext, inline]
     switches = [code_block_switch]
 
     return Writer(strategies, switches=switches)
