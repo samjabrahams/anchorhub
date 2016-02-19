@@ -280,3 +280,104 @@ class MarkdownInlineLinkWriterStrategy(WriterStrategy):
         :return:
         """
         return file_key in anchors and tag in anchors[file_key]
+
+
+class MarkdownReferenceLinkWriterStrategy(WriterStrategy):
+    """
+    Concrete WriterStrategy class used to change Markdown reference links
+    that use AnchorHub tags to instead use the associate auto-generated anchor.
+
+    A reference link (with an AnchorHub tag) has this format:
+        [ref]: (url#tag) "Optional Title"
+
+    If the generated anchor associated with 'tag' is 'this-is-my-header',
+    then the above will be converted to this:
+        [ref]: (url#this-is-my-header) "Optional Title"
+
+    Note that AnchorHub, at this time, assumes that any line starting with
+    the pattern:
+        [ref]: (url#tag)
+    Is intended to be a reference link, and doesn't do additional checks to
+    see whether or not the optional title line is valid Markdown (i.e. is
+    enclosed in one of double-quotes, single-quotes, or parentheses)
+    """
+    def __init__(self, opts):
+        """
+
+        :param opts:
+        :return:
+        """
+        self._ref_regex = re.compile(mdrx.ref_link, re.UNICODE)
+
+    def test(self, current_modified_line, file_lines=None, index=None):
+        """
+
+        :param current_modified_line:
+        :param file_lines:
+        :param index:
+        :return:
+        """
+        return self._ref_regex.match(current_modified_line)
+
+    def modify(self, current_modified_line, anchors, file_path,
+               file_lines=None, index=None):
+        """
+
+        :param current_modified_line:
+        :param anchors:
+        :param file_path:
+        :param file_lines:
+        :param index:
+        :return:
+        """
+        url_text = current_modified_line.split()[1]
+        url_start_index = current_modified_line.find(url_text)
+        url_end_index = url_start_index + len(url_text)
+        hash_index = url_text.find('#')  # index of '#' in url_text
+        link_path = url_text[:hash_index]
+        tag = url_text[hash_index + 1:]
+
+        if link_path == "":
+            # Link points to tag in this file
+            file_key = file_path
+        else:
+            file_key = self._get_file_key(file_path, link_path)
+
+        if self._file_has_tag_anchor_keypair(anchors, file_key, tag):
+            # The tag used on this link was specified as an AnchorHub tag
+            # Create string to return
+            mod = ""
+            # Add everything on the line up to (and including) the hash sign
+            mod += current_modified_line[:url_start_index + hash_index + 1]
+            # Add the associated generated anchor
+            mod += anchors[file_key][tag]
+            # Add on the rest of the line
+            mod += current_modified_line[url_end_index:]
+            return mod
+        else:
+            # The tag used is not an AnchorHub tag: don't change it
+            return current_modified_line
+
+    def _get_file_key(self, file_path, link_path):
+        """
+
+        :param file_path:
+        :param link_path:
+        :return:
+        """
+        if os.path.isabs(link_path):
+            return link_path
+        else:
+            file_dir = os.path.dirname(file_path)
+            joined_path = os.path.join(file_dir, link_path)
+            return os.path.abspath(joined_path)
+
+    def _file_has_tag_anchor_keypair(self, anchors, file_key, tag):
+        """
+
+        :param anchors:
+        :param file_key:
+        :param tag:
+        :return:
+        """
+        return file_key in anchors and tag in anchors[file_key]
