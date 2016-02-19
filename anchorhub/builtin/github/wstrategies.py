@@ -137,7 +137,7 @@ class MarkdownSetextWriterStrategy(WriterStrategy):
         index_in_bounds = index < len(file_lines) - 1
 
         if (self._header_regex.search(current_modified_line) and
-                self._underline_regex.match(self._underline_regex) and
+                self._underline_regex.match(file_lines[index+1]) and
                 index_in_bounds):
             return True
         else:
