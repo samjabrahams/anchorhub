@@ -96,7 +96,7 @@ class Writer(object):
         """
         f = open(file_path, 'wb')
         for i in range(len(lines)):
-            if sys.version >= (3,1):
+            if sys.version_info >= (3,1):
                 f.write(bytes(lines[i], "UTF-8"))
             else:
                 f.write(lines[i])
