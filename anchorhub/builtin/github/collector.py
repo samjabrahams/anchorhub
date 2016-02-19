@@ -4,7 +4,8 @@ files.
 """
 
 from anchorhub.collector import Collector
-from anchorhub.builtin.github.cstrategies import MarkdownATXCollectorStrategy
+from anchorhub.builtin.github.cstrategies import \
+    MarkdownATXCollectorStrategy, MarkdownSetextCollectorStrategy
 import anchorhub.builtin.github.converter as converter
 import anchorhub.builtin.github.switches as ghswitches
 
@@ -22,9 +23,10 @@ def make_github_markdown_collector(opts):
     """
     assert hasattr(opts, 'wrapper_regex')
     atx = MarkdownATXCollectorStrategy(opts)
+    setext = MarkdownSetextCollectorStrategy(opts)
     code_block_switch = ghswitches.code_block_switch
 
-    strategies = [atx]
+    strategies = [atx, setext]
     switches = [code_block_switch]
 
     return Collector(converter.create_anchor_from_header, strategies,
