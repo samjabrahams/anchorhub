@@ -25,7 +25,7 @@ What this strategy does is convert a header from this:
     Into this:
         # My awesome header
     """
-    def __init__(self, opts):
+    def __init__(self, opts, label=None):
         """
         Initializes the object to utilize the AnchorHub tag wrapper
         as specified.
@@ -33,17 +33,21 @@ What this strategy does is convert a header from this:
         :param opts: Namespace with the attributes 'wrapper_pattern', 'open',
             and 'close' typically obtained through command-line argument parsing
         """
+        super(MarkdownATXWriterStrategy, self).__init__(opts, label)
         self._open = opts.open
         self._close = opts.close
         self._header_pattern = r"^#+ .+" + opts.wrapper_regex + r"\s*$"
         self._regex = re.compile(self._header_pattern, re.UNICODE)
+        self._label = label
 
     def test(self, current_modified_line, file_lines=None, index=None):
         """
         Is this line an ATX header with an AnchorHub tag specified? Return
         True if it is.
 
-        :param current_modified_line:
+        :param current_modified_line: string representing the the line at
+            file_lines[index] _after_ any previous modifications from other
+            WriterStrategy objects
         :param file_lines: List of strings corresponding to lines in a text file
         :param index: index of file_lines corresponding to the current line
         :return: True if the line in file_lines at index is an ATX header
@@ -54,22 +58,26 @@ What this strategy does is convert a header from this:
     def modify(self, current_modified_line, anchors, file_path, file_lines=None,
                index=None):
         """
+        Removes the trailing AnchorHub tag from the end of the line being
+        examined.
 
-        :param current_modified_line:
-        :param anchors:
-        :param file_path:
-        :param file_lines:
-        :param index:
-        :return:
+        :param current_modified_line: string representing the the line at
+            file_lines[index] _after_ any previous modifications from other
+            WriterStrategy objects
+        :param anchors: Dictionary mapping string file paths to inner
+            dictionaries. These inner dictionaries map string AnchorHub tags
+            to string generated anchors
+        :param file_path: string representing the file_path of the current
+            file being examined by this WriterStrategy
+        :param file_lines: List of strings corresponding to lines in a text file
+        :param index: index of file_lines corresponding to the current line
+        :return: The line
         """
         open_wrapper_index = current_modified_line.rfind(self._open)
         # '- 1' removes trailing space. May want to modify to completely
         # strip whitespace at the end, instead of only working for a single
         # space
         return current_modified_line[:open_wrapper_index - 1] + "\n"
-
-    def get_label(self):
-        return "ATX headers"
 
 
 class MarkdownSetextWriterStrategy(WriterStrategy):
@@ -100,7 +108,7 @@ class MarkdownSetextWriterStrategy(WriterStrategy):
 
         This header has an AnchorHub tag!
     """
-    def __init__(self, opts):
+    def __init__(self, opts, label=None):
         """
         Initializes the WriterStrategy to utilize the AnchorHub tag wrapper
         as specified.
@@ -108,6 +116,7 @@ class MarkdownSetextWriterStrategy(WriterStrategy):
         :param opts:Namespace with the attributes 'wrapper_pattern', 'open',
             and 'close' typically obtained through command-line argument parsing
         """
+        super(MarkdownSetextWriterStrategy, self).__init__(opts, label)
         self._open = opts.open
         self._close = opts.close
         self._header_pattern = opts.wrapper_regex + r"\s*$"
@@ -128,12 +137,12 @@ class MarkdownSetextWriterStrategy(WriterStrategy):
         :return: True if the line in line_files at index is a Setext header
             with an AnchorHub tag declared. False otherwise
         """
-        if file_lines is None: raise ValueError("file_lines list must be "
-                                                 "provided to test() method in "
-                                                 "MarkdownSetextWriterStrategy")
-        if index is None: raise ValueError("index must be provided to test() "
-                                            "method in "
-                                            "MarkdownSetextWriterStrategy")
+        if file_lines is None:
+            raise ValueError("file_lines list must be provided to test() method"
+                             " in MarkdownSetextWriterStrategy")
+        if index is None:
+            raise ValueError("index must be provided to test() method in "
+                             "MarkdownSetextWriterStrategy")
 
         # If index is at len(file_lines) - 1, it's the last line in file
         # Since it needs an underline, cannot be a header
@@ -163,9 +172,6 @@ class MarkdownSetextWriterStrategy(WriterStrategy):
         # space
         return current_modified_line[:open_wrapper_index - 1] + "\n"
 
-    def get_label(self):
-        return "Setext headers"
-
 
 class MarkdownInlineLinkWriterStrategy(WriterStrategy):
     """
@@ -179,12 +185,13 @@ class MarkdownInlineLinkWriterStrategy(WriterStrategy):
     then the above would be converted to this:
         [This is the visible text](url#this-is-my-header)
     """
-    def __init__(self, opts):
+    def __init__(self, opts, label=None):
         """
 
         :param opts:
         :return:
         """
+        super(MarkdownInlineLinkWriterStrategy, self).__init__(opts, label)
         self._link_regex = re.compile(mdrx.anchor_link, re.UNICODE)
         self._link_start_regex = re.compile(mdrx.anchor_link_start, re.UNICODE)
 
@@ -253,9 +260,6 @@ class MarkdownInlineLinkWriterStrategy(WriterStrategy):
         changed_line += current_modified_line[last_index:]
         return changed_line
 
-    def get_label(self):
-        return "inline links"
-
     def _get_file_key(self, file_path, link_path):
         """
 
@@ -310,12 +314,13 @@ class MarkdownReferenceLinkWriterStrategy(WriterStrategy):
     see whether or not the optional title line is valid Markdown (i.e. is
     enclosed in one of double-quotes, single-quotes, or parentheses)
     """
-    def __init__(self, opts):
+    def __init__(self, opts, label=None):
         """
 
         :param opts:
         :return:
         """
+        super(MarkdownReferenceLinkWriterStrategy, self).__init__(opts, label)
         self._ref_regex = re.compile(mdrx.ref_link, re.UNICODE)
 
     def test(self, current_modified_line, file_lines=None, index=None):
@@ -366,9 +371,6 @@ class MarkdownReferenceLinkWriterStrategy(WriterStrategy):
         else:
             # The tag used is not an AnchorHub tag: don't change it
             return current_modified_line
-
-    def get_label(self):
-        return "reference links"
 
     def _get_file_key(self, file_path, link_path):
         """
