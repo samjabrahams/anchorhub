@@ -25,15 +25,17 @@ def main(argv=None):
     assert validate_opts.validate(opts)
     opts = normalize_opts.normalize(opts)
 
-    # Update client: print input and output directories
-    messages.print_directories(opts)
+    if opts.verbose:
+        # Update client: print input and output directories
+        messages.print_directories(opts)
 
     file_paths = get_files(opts.abs_input, opts.extensions,
                            exclude=[opts.abs_output])
     assert validate_files.validate(file_paths, opts)
 
-    # Update client: print files that will be parsed
-    messages.print_files(opts, file_paths)
+    if opts.verbose:
+        # Update client: print files that will be parsed
+        messages.print_files(opts, file_paths)
 
     # For now, only using default GitHub Markdown for parsing
     # Collect tag/anchor combinations
@@ -44,11 +46,12 @@ def main(argv=None):
     writer = make_github_markdown_writer(opts)
     counter = writer.write(file_paths, anchors, opts)
 
-    # Update client: print files that had modifications
-    messages.print_modified_files(opts, anchors)
+    if opts.verbose:
+        # Update client: print files that had modifications
+        messages.print_modified_files(opts, anchors)
 
-    # Print summary statistics
-    messages.print_summary_stats(counter)
+        # Print summary statistics
+        messages.print_summary_stats(counter)
 
 if __name__ == '__main__':
     main()
