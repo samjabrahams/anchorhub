@@ -72,6 +72,7 @@ class Collector(object):
             if len(d) > 0:
                 # There were duplicates found in the file
                 self._duplicate_tags[file_path] = d
+            self._reset_switches()
         return self._anchors, self._duplicate_tags
 
     def collect_single_file(self, file_path):
@@ -137,6 +138,13 @@ class Collector(object):
         :return: True if no _switches are set to True in the Collector object
         """
         return not any(s.is_switched() for s in self._switches)
+
+    def _reset_switches(self):
+        """
+        Sets all switches in the Collecter object to False
+        """
+        for s in self._switches:
+            s.force(False)
 
 
 class CollectorStrategy(object):

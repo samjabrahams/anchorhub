@@ -69,3 +69,12 @@ class ArmedSwitch(object):
         :return: Boolean
         """
         return self._armed
+
+    def force(self, state):
+        """
+        Forces the switch to be switched to a particular state, regardless of
+        its armed status.
+
+        :param state: Boolean value to set the switch to
+        """
+        self._switched = state

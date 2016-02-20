@@ -41,6 +41,7 @@ class Writer(object):
         """
         for file_path in file_paths:
             self.write_single_file(file_path, anchors, opts)
+            self._reset_switches()
         return self._counter
 
     def write_single_file(self, file_path, anchors, opts):
@@ -52,6 +53,7 @@ class Writer(object):
         :return: A list of numbers, counting the number of times each
             strategy was used
         """
+        print(self._no_switches_on())
         lines = FileToList.to_list(file_path)
         new_text = []
         file_is_modified = False  # Will only rewrite file when True
@@ -70,6 +72,7 @@ class Writer(object):
                             self._counter[n][0] += 1  # Strategy counter +1
                             file_is_modified = True  # Must rewrite this file
             new_text.append(modified_line)
+            self._arm_switches()
         if file_is_modified:
             self._write_with_opts(file_path, new_text, opts)
         return self._counter
@@ -142,6 +145,13 @@ class Writer(object):
         :return: True if no _switches are set to True in the Collector object
         """
         return not any(s.is_switched() for s in self._switches)
+
+    def _reset_switches(self):
+        """
+        Sets all switches in the Writer object to False
+        """
+        for s in self._switches:
+            s.force(False)
 
 
 class WriterStrategy(object):

@@ -104,3 +104,12 @@ class ArmedCheckSwitch(object):
         :return: Boolean. True if the switch's armed state is True
         """
         return self._switch.is_armed()
+
+    def force(self, state):
+        """
+        Forces the switch to be switched to a particular state, regardless of
+        its armed status.
+
+        :param state: Boolean value to set the switch to
+        """
+        self._switch.force(state)
