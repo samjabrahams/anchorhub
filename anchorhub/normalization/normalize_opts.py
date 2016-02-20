@@ -20,6 +20,7 @@ def normalize(opts):
     :return: a namespace with the attributes modified
     """
     opts_dict = vars(opts)
+    add_is_dir(opts_dict)
     ensure_directories_end_in_separator(opts_dict)
     add_abs_path_directories(opts_dict)
     add_open_close_wrappers(opts_dict)
@@ -52,6 +53,18 @@ def add_open_close_wrappers(opts_dict):
     opts_dict['open'], opts_dict['close'] = opts_dict['wrapper'].split()
 
 
+def add_is_dir(opts_dict):
+    """
+    Checks to see if the input argument is a directory, and adds the key
+    'is_dir' to opts_dict. The value is True if it is a directory,
+    and False if it is not.
+
+    :param opts_dict: Dictionary that will be modified
+    """
+    assert_has_input_output(opts_dict)
+    opts_dict['is_dir'] = path.isdir(opts_dict['input'])
+
+
 def ensure_directories_end_in_separator(opts_dict):
     """
     Adds a path separator to the end of the input and output directories,
@@ -60,8 +73,12 @@ def ensure_directories_end_in_separator(opts_dict):
     :param opts_dict: dictionary that will be modified
     """
     assert_has_input_output(opts_dict)
-    opts_dict['input'] = add_suffix(opts_dict['input'], get_path_separator())
+    assert 'is_dir' in opts_dict
+    if opts_dict['is_dir']:
+        opts_dict['input'] = add_suffix(opts_dict['input'],
+                                        get_path_separator())
     opts_dict['output'] = add_suffix(opts_dict['output'], get_path_separator())
+
 
 def assert_has_input_output(opts_dict):
     """

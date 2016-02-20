@@ -8,6 +8,8 @@ import os.path as path
 
 import anchorhub.normalization.normalize_opts as n
 from anchorhub.compatibility import get_path_separator
+from anchorhub.util.getanchorhubpath import get_anchorhub_path
+from anchorhub.compatibility import get_path_separator
 
 
 class NormObj(object):
@@ -26,6 +28,7 @@ class NormObj(object):
             self.extensions = extensions
         if overwrite is not None:
             self.overwrite = overwrite
+
 
 def test_normalize():
     """
@@ -90,3 +93,20 @@ def test_add_wrapper_regex():
     n.add_wrapper_regex(a)
     assert 'wrapper_regex' in a
     assert a['wrapper_regex'] == r"\{\s*#((?!\{)(?!\})\S)+\s*\}"
+
+
+def test_add_is_file():
+    """
+    normalize_opts.py: Test add_is_file()
+    """
+    dir = get_anchorhub_path()
+    a = {'input': dir, 'output': 'anchorhub-out'}
+    n.add_is_dir(a)
+    assert 'is_dir' in a
+    assert a['is_dir'] == True
+
+    file = get_anchorhub_path() + get_path_separator() + 'main.py'
+    b = {'input': file, 'output': 'anchorhub-out'}
+    n.add_is_dir(b)
+    assert 'is_dir' in b
+    assert b['is_dir'] == False
