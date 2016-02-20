@@ -8,7 +8,7 @@ from anchorhub.compatibility import get_path_separator
 from anchorhub.util.addsuffix import add_suffix
 
 
-def get_files(dir, exts, exclude=None, recursive=True):
+def get_files(dir, exts, exclude=None, recursive=False):
     """
     Get a list of files within a directory with given extensions.
     Exclude/black list directories from the list if specified. By default,
