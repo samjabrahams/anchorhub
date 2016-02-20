@@ -53,7 +53,6 @@ class Writer(object):
         :return: A list of numbers, counting the number of times each
             strategy was used
         """
-        print(self._no_switches_on())
         lines = FileToList.to_list(file_path)
         new_text = []
         file_is_modified = False  # Will only rewrite file when True
