@@ -45,7 +45,7 @@ def main(argv=None):
     counter = writer.write(file_paths, anchors, opts)
 
     # Update client: print files that had modifications
-    messages.print_modified_files(anchors)
+    messages.print_modified_files(opts, anchors)
 
     # Print summary statistics
     messages.print_summary_stats(counter)
