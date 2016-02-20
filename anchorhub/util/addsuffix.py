@@ -2,6 +2,7 @@
 File for helper function add_suffix()
 """
 
+
 def add_suffix(string, suffix):
     """
     Adds a suffix to a string, if the string does not already have that suffix.
