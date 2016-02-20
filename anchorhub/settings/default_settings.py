@@ -29,3 +29,7 @@ ARGPARSE_WRAPPER = {
     'help': "Specify custom wrapper format (default is \"" + WRAPPER + "\")",
     'default': WRAPPER
 }
+ARGPARSE_VERBOSE = {
+    'help': "When this flag is active, AnchorHub generates a verbose output "
+            "to stdout, with summary stats about the process"
+}

@@ -32,8 +32,9 @@ def parse_args(args=None):
                         help=ds.ARGPARSE_EXTENSION['help'])
     parser.add_argument('-w', '--wrapper', help=ds.ARGPARSE_WRAPPER['help'],
                         default=ds.ARGPARSE_WRAPPER['default'], )
-    parser.add_argument('-v', '--version', action='version',
-                        version=ah.__version__)
+    parser.add_argument('--version', action='version', version=ah.__version__)
+    parser.add_argument('-v', '--verbose', help=ds.ARGPARSE_VERBOSE['help'],
+                        action='store_true')
 
     if args is not None:
         return parser.parse_args(args)
