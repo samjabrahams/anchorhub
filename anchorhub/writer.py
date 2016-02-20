@@ -147,8 +147,18 @@ class Writer(object):
 class WriterStrategy(object):
     __metaclass__ = ABCMeta
 
-    def __init__(self, opts):
-        pass
+    def __init__(self, opts, label=None):
+        """
+        Initializes any necessary parameters for the WriterStrategy using
+        opts, a namespace containing runtime options for AnchorHub
+
+        :param opts: a namespace containing runtime options for AnchorHub,
+            typically created from command-line arguments
+        :param label: string label describing what this WriterStrategy
+            modifies. For example, a WriterStrategy that modified headers
+            might use the label 'headers'
+        """
+        self._label = label
 
     @abstractmethod
     def test(self, current_modified_line, file_lines=None, index=None):
@@ -190,7 +200,6 @@ class WriterStrategy(object):
         """
         pass
 
-    @abstractmethod
     def get_label(self):
         """
         Should return a string label describing what this WriterStrategy
@@ -198,3 +207,4 @@ class WriterStrategy(object):
 
         :return: string label describing what this WriterStrategy modifies
         """
+        return self._label
