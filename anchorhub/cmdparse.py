@@ -35,6 +35,8 @@ def parse_args(args=None):
     parser.add_argument('--version', action='version', version=ah.__version__)
     parser.add_argument('-v', '--verbose', help=ds.ARGPARSE_VERBOSE['help'],
                         action='store_true')
+    parser.add_argument('-r', '-R', help=ds.ARGPARSE_RECURSIVE['help'],
+                        action='store_true', dest='recursive')
 
     if args is not None:
         return parser.parse_args(args)
