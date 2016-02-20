@@ -24,7 +24,7 @@ def print_files(opts, file_paths):
     for file_path in file_paths:
         print("  " + strip_prefix(file_path, opts.abs_input))
     print("--------------------")
-    print(str(len(file_paths)) + " files total\n")
+    print(str(len(file_paths)) + " total\n")
 
 
 def print_no_files_found(opts):
@@ -43,7 +43,7 @@ def print_no_files_found(opts):
     print(msg)
 
 
-def print_modified_files(anchors):
+def print_modified_files(opts, anchors):
     """
     Prints out which files were modified amongst those looked at
 
@@ -52,8 +52,9 @@ def print_modified_files(anchors):
     """
     print("Files with modifications:")
     for file_path in anchors:
-        print("  " + file_path)
-    print("")
+        print("  " + strip_prefix(file_path, opts.abs_input))
+    print("--------------------")
+    print(str(len(anchors)) + " total\n")
 
 
 def print_summary_stats(counter):
@@ -65,8 +66,14 @@ def print_summary_stats(counter):
         number count of how many times a WriterStrategy was used, and the
         second entry is a string label describing the WriterStrategy
     """
-    sum = 0
+    sum = 0     # Sum of labeled WriterStrategy modifications
+    u_sum = 0   # Sum of unlabeled WriterStrategy modifications
     for c in counter:
-        print("Total " + c[1] + " modified:\t" + str(c[0]))
-        sum += c[0]
-    print("total modifications: \t\t" + str(sum))
+        if c[1] is not None and c[0] > 0:
+            print("Total " + c[1] + " modified:\t" + str(c[0]))
+            sum += c[0]
+        else:
+            u_sum += c[0]
+    if u_sum > 0:
+        print("Unlabeled modifications: \t" + str(u_sum))
+    print("Total modifications: \t\t" + str(sum + u_sum))
