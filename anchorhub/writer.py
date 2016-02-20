@@ -21,7 +21,7 @@ class Writer(object):
         """
         The initializer for the Collector.
 
-        :param strategies: Concrete WriterStrategeis
+        :param strategies: Concrete WriterStrategies
         :param switches:
         """
         self._strategies = strategies  # List of concrete WriterStrategy objs
