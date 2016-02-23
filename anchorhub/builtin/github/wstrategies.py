@@ -50,8 +50,8 @@ What this strategy does is convert a header from this:
             WriterStrategy objects
         :param file_lines: List of strings corresponding to lines in a text file
         :param index: index of file_lines corresponding to the current line
-        :return: True if the line in file_lines at index is an ATX header
-            with an AnchorHub tag declared. False otherwise
+        :return: True if current_modified_line is an ATX header with an
+        AnchorHub tag declared. False otherwise
         """
         return self._regex.match(current_modified_line)
 
@@ -71,7 +71,8 @@ What this strategy does is convert a header from this:
             file being examined by this WriterStrategy
         :param file_lines: List of strings corresponding to lines in a text file
         :param index: index of file_lines corresponding to the current line
-        :return: The line
+        :return: string. A version of current_modified_line that has the
+            AnchorHub tag removed from the end of it
         """
         open_wrapper_index = current_modified_line.rfind(self._open)
         # '- 1' removes trailing space. May want to modify to completely
@@ -113,7 +114,7 @@ class MarkdownSetextWriterStrategy(WriterStrategy):
         Initializes the WriterStrategy to utilize the AnchorHub tag wrapper
         as specified.
 
-        :param opts:Namespace with the attributes 'wrapper_pattern', 'open',
+        :param opts: Namespace with the attributes 'wrapper_pattern', 'open',
             and 'close' typically obtained through command-line argument parsing
         """
         super(MarkdownSetextWriterStrategy, self).__init__(opts, label)
@@ -131,11 +132,13 @@ class MarkdownSetextWriterStrategy(WriterStrategy):
         file_lines and index _must_ be provided to this function, or it will
         throw a ValueError
 
-        :param current_modified_line:
-        :param file_lines:
-        :param index:
-        :return: True if the line in line_files at index is a Setext header
-            with an AnchorHub tag declared. False otherwise
+        :param current_modified_line: string representing the the line at
+            file_lines[index] _after_ any previous modifications from other
+            WriterStrategy objects
+        :param file_lines: List of strings corresponding to lines in a text file
+        :param index: index of file_lines corresponding to the current line:
+        :return: True if current_modified_line is a Setext header with an
+        AnchorHub tag declared. False otherwise
         """
         if file_lines is None:
             raise ValueError("file_lines list must be provided to test() method"
@@ -159,12 +162,18 @@ class MarkdownSetextWriterStrategy(WriterStrategy):
                index=None):
         """
 
-        :param current_modified_line:
-        :param anchors:
-        :param file_path:
-        :param file_lines:
-        :param index:
-        :return:
+        :param current_modified_line: string representing the the line at
+            file_lines[index] _after_ any previous modifications from other
+            WriterStrategy objects
+        :param anchors: Dictionary mapping string file paths to inner
+            dictionaries. These inner dictionaries map string AnchorHub tags
+            to string generated anchors
+        :param file_path: string representing the file_path of the current
+            file being examined by this WriterStrategy
+        :param file_lines: List of strings corresponding to lines in a text file
+        :param index: index of file_lines corresponding to the current line
+        :return: string. A version of current_modified_line that has the
+            AnchorHub tag removed from the end of it
         """
         open_wrapper_index = current_modified_line.rfind(self._open)
         # '- 1' removes trailing space. May want to modify to completely
@@ -187,9 +196,10 @@ class MarkdownInlineLinkWriterStrategy(WriterStrategy):
     """
     def __init__(self, opts, label=None):
         """
+        Initializes object regex objects.
 
-        :param opts:
-        :return:
+        :param opts: AnchorHub options namespace, usually created from
+            command-line arguments
         """
         super(MarkdownInlineLinkWriterStrategy, self).__init__(opts, label)
         self._link_regex = re.compile(mdrx.anchor_link, re.UNICODE)
@@ -197,24 +207,37 @@ class MarkdownInlineLinkWriterStrategy(WriterStrategy):
 
     def test(self, current_modified_line, file_lines=None, index=None):
         """
+        Does current_modified_line contain one or more inline Markdown links
+        that use an anchor (i.e. uses a '#' in the link)? Return True if so.
 
-        :param current_modified_line:
-        :param file_lines:
-        :param index:
-        :return:
+        :param current_modified_line: string representing the the line at
+            file_lines[index] _after_ any previous modifications from other
+            WriterStrategy objects
+        :param file_lines: List of strings corresponding to lines in a text file
+        :param index: index of file_lines corresponding to the current line
+        :return: True if the current_modified_line contains one or more
+            inline anchor links. False otherwise
         """
         return self._link_regex.search(current_modified_line)
 
     def modify(self, current_modified_line, anchors, file_path, file_lines=None,
                index=None):
         """
+        Replace all AnchorHub tag-using inline links in this line and edit
+        them to use
 
-        :param current_modified_line:
-        :param anchors:
-        :param file_path:
-        :param file_lines:
-        :param index:
-        :return:
+        :param current_modified_line: string representing the the line at
+            file_lines[index] _after_ any previous modifications from other
+            WriterStrategy objects:
+        :param anchors: Dictionary mapping string file paths to inner
+            dictionaries. These inner dictionaries map string AnchorHub tags
+            to string generated anchor
+        :param file_path: string representing the file_path of the current
+            file being examined by this WriterStrategy
+        :param file_lines: List of strings corresponding to lines in a text file
+        :param index: index of file_lines corresponding to the current line
+        :return: string. current_modified_line with all inline links that use
+            AnchorHub tags replaced with their associated generated anchors
         """
         changed_line = ""  # Will be built up piece by piece as we find links
         links = self._get_link_indices(current_modified_line)
@@ -262,10 +285,15 @@ class MarkdownInlineLinkWriterStrategy(WriterStrategy):
 
     def _get_file_key(self, file_path, link_path):
         """
+        Finds the absolute path of link_path relative to file_path. The
+        absolute path is the key to anchors dictionary used throughout the
+        AnchorHub process
 
-        :param file_path:
-        :param link_path:
-        :return:
+        :param file_path: string file path of the file that contains the link
+            being examined
+        :param link_path: string. The link URL that we'd like to find the
+            absolute path for
+        :return: the absolute path of link_path relative to file_path
         """
         if os.path.isabs(link_path):
             return link_path
@@ -277,20 +305,29 @@ class MarkdownInlineLinkWriterStrategy(WriterStrategy):
 
     def _get_link_indices(self, current_modified_line):
         """
+        Get a list of tuples containing start and end indices of inline
+        anchor links
 
-        :param current_modified_line:
-        :return:
+        :param current_modified_line: The line being examined for links
+        :return: A list containing tuples of the form (start, end),
+        the starting and ending indices of inline anchors links.
         """
         # List of (start_index, end_index) tuples for each link in the line
         return [m.span() for m in self._link_regex.finditer(current_modified_line)]
 
     def _file_has_tag_anchor_keypair(self, anchors, file_key, tag):
         """
+        Is there an AnchorHub tag, 'tag', registered for file 'file_key' in
+        'anchors'?
 
-        :param anchors:
-        :param file_key:
-        :param tag:
-        :return:
+        :param anchors: Dictionary mapping string file paths to inner
+            dictionaries. These inner dictionaries map string AnchorHub tags
+            to string generated anchors
+        :param file_key: The absolute path to the file that may or may not
+            have the AnchorHub tag in it. Used as a key to anchors
+        :param tag: The string being tested
+        :return: True if tag is a valid AnchorHub tag in the file associated
+            with 'file_key'
         """
         return file_key in anchors and tag in anchors[file_key]
 

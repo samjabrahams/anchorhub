@@ -4,14 +4,18 @@ messages.py - Functions that print out messages to the console
 from anchorhub.util.stripprefix import strip_prefix
 
 
-def print_directories(opts):
+def print_input_output(opts):
     """
     Prints the input and output directories to the console.
 
     :param opts: namespace that contains printable 'input' and 'output' fields.
     """
-    print("Root input directory: \t" + opts.input)
-    print("Outputting to: \t\t" + opts.output + "\r\n")
+    if opts.is_dir:
+        print("Root input directory:\t" + opts.input)
+        print("Outputting to:\t\t" + opts.output + "\n")
+    else:
+        print("Input file:\t\t" + opts.input)
+        print("Outputting to:\t\t" + opts.output + opts.input + "\n")
 
 
 def print_files(opts, file_paths):

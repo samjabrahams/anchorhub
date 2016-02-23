@@ -81,9 +81,7 @@ class Collector(object):
         and collects the AnchorHub tags and auto-generated anchors for the
         file according to the  Collector's converter, strategies, and switches
 
-
-
-        :param lines: List of strings.
+        :param file_path: string file path of file to examine
         :return: A dictionary mapping AnchorHub tags to auto-generated
             anchors, and a list of containing an entry for each duplicate tag
             found on the page.

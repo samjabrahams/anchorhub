@@ -12,7 +12,7 @@ ARGPARSER = {
                    "links to specially formatted anchors."
 }
 ARGPARSE_INPUT = {
-    'help': "Path of directory tree to be parsed",
+    'help': "Path of file or directory to parse",
 }
 ARGPARSE_OUTPUT = {
     'help': "Desired output location (default is \"" + OUTPUT + "\")",
@@ -23,13 +23,16 @@ ARGPARSE_OVERWRITE = {
 }
 ARGPARSE_EXTENSION = {
     'help': "Indicate which file extensions to search and run anchorhub on.",
-    'default': [".md"]
+    'default': ['.md', '.markdown']
 }
 ARGPARSE_WRAPPER = {
     'help': "Specify custom wrapper format (default is \"" + WRAPPER + "\")",
     'default': WRAPPER
 }
 ARGPARSE_VERBOSE = {
-    'help': "When this flag is active, AnchorHub generates a verbose output "
-            "to stdout, with summary stats about the process"
+    'help': "Generate verbose output with summary stats"
+}
+ARGPARSE_RECURSIVE = {
+    'help': "Perform AnchorHub in the file hierarchy rooted with the input "
+            "argument. AnchorHub tags are maintained across the file hierarchy"
 }

@@ -3,6 +3,7 @@ Command-line entry to AnchorHub, main method is here.
 """
 
 import anchorhub.cmdparse as cmdparse
+import anchorhub.fileparse as fileparse
 import anchorhub.messages as messages
 import anchorhub.normalization.normalize_opts as normalize_opts
 import anchorhub.validation.validate_opts as validate_opts
@@ -27,13 +28,12 @@ def main(argv=None):
 
     if opts.verbose:
         # Update client: print input and output directories
-        messages.print_directories(opts)
+        messages.print_input_output(opts)
 
-    file_paths = get_files(opts.abs_input, opts.extensions,
-                           exclude=[opts.abs_output])
+    file_paths = fileparse.get_file_list(opts)
     assert validate_files.validate(file_paths, opts)
 
-    if opts.verbose:
+    if opts.verbose and opts.is_dir:
         # Update client: print files that will be parsed
         messages.print_files(opts, file_paths)
 
@@ -42,14 +42,14 @@ def main(argv=None):
     collector = make_github_markdown_collector(opts)
     anchors, duplicate_tags = collector.collect(file_paths)
 
-    # Write
+    # Write files using previously found AnchorHub tags and generated anchors
     writer = make_github_markdown_writer(opts)
     counter = writer.write(file_paths, anchors, opts)
 
     if opts.verbose:
-        # Update client: print files that had modifications
-        messages.print_modified_files(opts, anchors)
-
+        if opts.is_dir:
+            # Update client: print files that had modifications
+            messages.print_modified_files(opts, anchors)
         # Print summary statistics
         messages.print_summary_stats(counter)
 

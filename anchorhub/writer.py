@@ -86,8 +86,12 @@ class Writer(object):
         if opts.overwrite:
             self._write_file_with_list(file_path, lines)
         else:
-            write_path = opts.abs_output + strip_prefix(file_path,
-                                                        opts.abs_input)
+            if opts.is_dir:
+                # Directory style output
+                write_path = opts.abs_output + strip_prefix(file_path,
+                                                            opts.abs_input)
+            else:
+                write_path = opts.abs_output + opts.input  # single file output
             self._create_dirs_if_necessary(write_path)
             self._write_file_with_list(write_path, lines)
 

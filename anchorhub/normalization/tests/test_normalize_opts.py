@@ -17,7 +17,7 @@ class NormObj(object):
     Helper class for testing out normalize_opts.normalize()
     """
     def __init__(self, input=None, output=None, wrapper=None, extensions=None,
-                 overwrite = None):
+                 overwrite=None):
         if input is not None:
             self.input = input
         if output is not None:
@@ -49,7 +49,8 @@ def test_abs_path_directories():
     normalize_opts.py: Test add_abs_path_directories()
     """
     a = {'input': '.',
-         'output': 'anchorhub-out'}
+         'output': 'anchorhub-out',
+         'is_dir': True}
     n.add_abs_path_directories(a)
     assert 'abs_input' in a
     assert 'abs_output' in a
@@ -73,17 +74,24 @@ def test_ensure_directories_end_in_separator():
     """
     normalize_opts.py: Test ensure_directories_end_in_separator()
     """
-    a = {'input': '.', 'output': 'anchorhub-out'}
+    a = {'input': '.', 'output': 'anchorhub-out', 'is_dir': True}
     n.ensure_directories_end_in_separator(a)
     assert a['input'] == '.' + get_path_separator()
     assert a['output'] == 'anchorhub-out' + get_path_separator()
 
     b = {'input': 'hello' + get_path_separator(),
-         'output': 'dolly' + get_path_separator()}
+         'output': 'dolly' + get_path_separator(),
+         'is_dir': True}
     n.ensure_directories_end_in_separator(b)
     assert b['input'] == 'hello' + get_path_separator()
     assert b['output'] == 'dolly' + get_path_separator()
 
+    c = {'input': 'fakefile.md',
+         'output': 'anchorhub-out',
+         'is_dir': False}
+    n.ensure_directories_end_in_separator(c)
+    assert c['input'] == 'fakefile.md'
+    assert c['output'] == 'anchorhub-out' + get_path_separator()
 
 def test_add_wrapper_regex():
     """

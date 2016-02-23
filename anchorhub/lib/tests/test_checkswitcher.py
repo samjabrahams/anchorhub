@@ -123,3 +123,17 @@ def test_disarm():
     assert s.is_armed() == True
     s.disarm()
     assert s.is_armed() == False
+
+
+def test_force():
+    """
+    lib/armedswitch.py: test force()
+    """
+    s = ArmedCheckSwitch()
+    assert s.is_switched() == False
+    assert s.switch() == True
+    assert s.is_armed() == False
+    assert s.switch() == False
+    assert s.is_switched() == True
+    s.force(False)
+    assert s.is_switched() == False

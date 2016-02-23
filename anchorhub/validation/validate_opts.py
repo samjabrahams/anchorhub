@@ -3,6 +3,7 @@ validate_opts.py - Functions for validating parsed command line arguments.
 """
 import sys
 
+import anchorhub.validation.validate_input as vi
 import anchorhub.validation.validate_extensions as ve
 import anchorhub.validation.validate_overwrite as vo
 import anchorhub.validation.validate_wrapper as vw
@@ -32,7 +33,7 @@ def validate(opts):
     try:
         return _validate(opts)
     except ValidationException as e:
-        print("Command line arguments failed validation:\n")
+        print("Command line arguments failed validation:")
         print(e)
         sys.exit(0)
     except ValueError as e:
@@ -46,7 +47,7 @@ def _validate(opts):
     Perform validation operations on opts, a namespace created from
     command-line arguments. Returns True if all validation tests are successful.
 
-    Runs validation() methods in validate_extensions.py,
+    Runs validation() methods in validate_input.py, validate_extensions.py,
     validate_overwrite.py, and validate_wrapper.py
 
     Required attributes on opts:
@@ -62,7 +63,8 @@ def _validate(opts):
     :raises ValueError: if opts is not a namespace with the correct parameters
     :return: True, if all tests are successful
     """
-    if all([ve.validate(opts),
+    if all([vi.validate(opts),
+            ve.validate(opts),
             vw.validate(opts),
             vo.validate(opts)]):
         return True

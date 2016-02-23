@@ -100,17 +100,18 @@ class MarkdownSetextCollectorStrategy(CollectorStrategy):
 
     def test(self, file_lines, index):
         """
-         This is line a Setext header with an AnchorHub tag specified? Return
-         True if it is.
+        This is line a Setext header with an AnchorHub tag specified? Return
+        True if it is.
 
-         file_lines and index _must_ be provided to this function, or it will
-         throw a ValueError
+        file_lines and index _must_ be provided to this function, or it will
+        throw a ValueError
 
-         :param file_lines:
-         :param index:
-         :return: True if the line in line_files at index is a Setext header
-             with an AnchorHub tag declared. False otherwise
-         """
+
+        :param file_lines: list of strings corresponding to lines in a text file
+        :param index: index of file_lines corresponding to the current line
+        :return: True if the line in line_files at index is a Setext header
+            with an AnchorHub tag declared. False otherwise
+        """
         if file_lines is None: raise ValueError("file_lines list must be "
                                                 "provided to test() method in "
                                                 "MarkdownSetextCollectorStrategy")

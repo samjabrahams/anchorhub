@@ -35,8 +35,10 @@ def add_abs_path_directories(opts_dict):
     :param opts_dict: dictionary that will be modified
     """
     assert_has_input_output(opts_dict)
-    opts_dict['abs_input'] = path.abspath(opts_dict['input']) + \
-        get_path_separator()
+    opts_dict['abs_input'] = path.abspath(opts_dict['input'])
+    if opts_dict['is_dir']:
+        # Only add path separator to input if it is a directory
+        opts_dict['abs_input'] += get_path_separator()
     opts_dict['abs_output'] = path.abspath(opts_dict['output']) + \
         get_path_separator()
 

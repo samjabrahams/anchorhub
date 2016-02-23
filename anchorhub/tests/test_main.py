@@ -17,4 +17,4 @@ def test_one():
     """
     main.main([get_anchorhub_path() + get_path_separator() +
                '../sample/multi-file', get_anchorhub_path() +
-               get_path_separator() + 'tests/anchorhub-out'])
+               get_path_separator() + 'tests/anchorhub-out', '-r'])

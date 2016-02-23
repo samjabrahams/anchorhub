@@ -45,7 +45,6 @@ def _validate(extensions):
 def validate_no_empty_strings(extensions):
     """
     Returns True if there are no empty strings in the list of extensions.
-    False otherwise.
 
     :param extensions: a list of string extensions
     :raises ValidationException:
@@ -60,7 +59,7 @@ def validate_no_empty_strings(extensions):
 
 def validate_list_not_empty(extensions):
     """
-    Returns True if the list provided is not empty. False otherwise
+    Returns True if the list provided is not empty.
 
     :param extensions: a list of string extensions
     :raises ValidationException:
