@@ -33,7 +33,7 @@ AnchorHub automatically automatically works for all files within a directory tre
 Let's link to that [other file's anchor!](other.md#ref)
 ```
 
-_Note: If you'd like to make references to files that are in a different directory, make sure that you use the `-r` flag when processing your files. [See below](#parse-all-subdirectories-recursively) for details._
+_Note: If your input references AnchorHub tags in files that are in a different directory, make sure that you use the `-r` flag when processing your files. [See below](#parse-all-subdirectories-recursively) for details._
 
 ## AnchorHub's Command Line Interface
 
@@ -45,15 +45,17 @@ anchorhub [-h] [-v] [-X] [-e EXTENSIONS [EXTENSIONS ...]] [-w WRAPPER] input [ou
 
 ### Input
 
-The only required argument to `anchorhub` is the desired input root. AnchorHub will walk through all subdirectories within the input and process all Markdown files it finds.
+The only required argument to `anchorhub` is the desired input. The input can either be a single file or a directory.
 
 ```shell
 $ anchorhub path/to/my/input
+
+$ anchorhub myfile.md
 ```
 
 ### Output
 
-The second argument, if provided, specifies the desired output directory. By default, AnchorHub will output to `anchorhub-out` within the present working directory. Regardless of where the output is located, the structure of the output directory will match that of the input directory.
+The second argument, if provided, specifies the desired output directory. By default, AnchorHub will output to the directory `anchorhub-out` within the present working directory, creating it if necessary. Regardless of where the output is located, the structure of the output directory will match that of the input directory.
 
 ```shell
 $ anchorhub input path/to/my/output
@@ -88,7 +90,7 @@ $ anchorhub -v
 
 **-r / -R:** Parse all files in the current directory, including all subdirectories (recursively)
 
-Use this flag to parse all files in the input directory, including subdirectories. AnchorHub will not move outside of the input directory while parsing, so make sure that the input is the highest-level directory that contains all files you want to parse.
+Use this flag to parse all files in the input directory, including subdirectories. AnchorHub will not move outside of the input directory while parsing, so make sure that the input is the highest-level directory which contains all files you want to parse.
 
 Links that point to AnchorHub tags in other files within the directory hierarchy will work as intended.
 
