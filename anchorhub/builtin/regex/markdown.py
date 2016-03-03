@@ -43,7 +43,9 @@ pattern more obnoxious, it makes its use more flexible. AnchorHub strives to
 not enforce an opinion on syntax- if it renders as Markdown, it should work
 in AnchorHub.
 """
-anchor_link = r"\[.+\]"     # square brackets, containing at least one char
+anchor_link = r"\["         # opening square bracket
+anchor_link += r"[^\[\]]+"  # at least one non-square bracket char
+anchor_link += r"\]"        # closing square bracket
 anchor_link += r"\s*"       # any amount of whitespace
 anchor_link += r"\("        # an opening parenthesis '('
 anchor_link += r"\s*"       # any amount of whitespace

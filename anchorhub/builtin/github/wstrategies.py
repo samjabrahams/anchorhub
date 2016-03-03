@@ -313,7 +313,10 @@ class MarkdownInlineLinkWriterStrategy(WriterStrategy):
         the starting and ending indices of inline anchors links.
         """
         # List of (start_index, end_index) tuples for each link in the line
-        return [m.span() for m in self._link_regex.finditer(current_modified_line)]
+        links = []
+        for m in self._link_regex.finditer(current_modified_line):
+            links.append(m.span())
+        return links
 
     def _file_has_tag_anchor_keypair(self, anchors, file_key, tag):
         """
