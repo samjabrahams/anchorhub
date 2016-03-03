@@ -1,8 +1,8 @@
-# AnchorHub Preemptively Answered Questions {#faq}
+# AnchorHub Preemptively Answered Questions {#up}
 
 ---
 
-[Readme](README.md) | [Table of Contents](CONTENTS.md) | [AnchorHub User Guide](GUIDE.md) | [AnchorHub Definitions](DEFINITIONS.md) | **FAQ** | [About AnchorHub](ABOUT.md) 
+[Readme](README.md#up) | [Table of Contents](CONTENTS.md#up) | [AnchorHub User Guide](GUIDE.md#up) | [AnchorHub Definitions](DEFINITIONS.md#up) | **FAQ** | [About AnchorHub](ABOUT.md#up) 
 
 ---
 
@@ -31,4 +31,4 @@ The prototype implementation of AnchorHub did read from stream, but it proved to
 
 ---
 
-[Back to top](#faq)
+[Back to top](#up)

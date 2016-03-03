@@ -1,6 +1,6 @@
 # AnchorHub Table of Contents
 
-[Readme](README.md) | **Table of Contents** | [AnchorHub User Guide](GUIDE.md) | [AnchorHub Definitions](DEFINITIONS.md) | [FAQ](FAQ.md) | [About AnchorHub](ABOUT.md) 
+[Readme](README.md#up) | **Table of Contents** | [AnchorHub User Guide](GUIDE.md#up) | [AnchorHub Definitions](DEFINITIONS.md#up) | [FAQ](FAQ.md#up) | [About AnchorHub](ABOUT.md#about-anchorhub) 
 
 ## [Readme](README.md#anchorhub)
 
@@ -17,7 +17,7 @@
 * [License](README.md#license)
 
 
-## [AnchorHub User Guide](GUIDE.md#anchorhub-user-guide)
+## [AnchorHub User Guide](GUIDE.md#guide)
 
 * [Defining AnchorHub Tags](GUIDE.md#defining-anchorhub-tags)
 * [Link Syntax](GUIDE.md#link-syntax)
@@ -37,12 +37,12 @@
 	* [Single file](GUIDE.md#single-file)
 	* [Multi-file](GUIDE.md#multi-file)
 
-## [Terminology/Definitions](DEFINITIONS.md#terminologydefinitions)
+## [Terminology/Definitions](DEFINITIONS.md#defs)
 * [AnchorHub tags](DEFINITIONS.md#anchorhub-tags)
 * [Auto-generated anchors](DEFINITIONS.md#auto-generated-anchors)
 * [Wrappers](DEFINITIONS.md#wrappers)
 
-## [About AnchorHub](ABOUT.md#about-anchorhub)
+## [About AnchorHub](ABOUT.md#about)
 
 * [Beginnings](ABOUT.md#beginnings)
 * [Goals](ABOUT.md#goals)
@@ -51,9 +51,13 @@
 	* [Let the user make their own syntax decisions if possible](ABOUT.md#let-the-user-make-their-own-syntax-decisions-if-possible)
 * [About the Author](ABOUT.md#about-the-author)
 
-## [FAQ](FAQ.md#anchorhub-preemptively-answered-questions)
+## [FAQ](FAQ.md#faq)
 
 * [Why use AnchorHub?](FAQ.md#why-use-anchorhub)
 * [What about ReStructuredText support?](FAQ.md#what-about-restructuredtext-support)
 * [Can you add support for non-GitHub style header anchors?](FAQ.md#can-you-add-support-for-non-github-style-header-anchors)
 * [Why load files into memory instead of just reading from stream?](FAQ.md#why-load-files-into-memory-instead-of-just-reading-from-stream)
+
+---
+
+[Back to top](#anchorhub-table-of-contents)

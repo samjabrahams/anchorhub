@@ -12,7 +12,7 @@
 
 ---
 
-**Readme** | [Table of Contents](CONTENTS.md) | [AnchorHub User Guide](GUIDE.md) | [AnchorHub Definitions](DEFINITIONS.md) | [FAQ](FAQ.md) | [About AnchorHub](ABOUT.md) 
+**Readme** | [Table of Contents](CONTENTS.md#up) | [AnchorHub User Guide](GUIDE.md#up) | [AnchorHub Definitions](DEFINITIONS.md#up) | [FAQ](FAQ.md#up) | [About AnchorHub](ABOUT.md#about-anchorhub) 
 
 ---
 

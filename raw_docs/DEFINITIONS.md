@@ -1,4 +1,4 @@
-# Terminology/Definitions {#defs}
+# Terminology/Definitions {#up}
 
 [Readme](README.md) | [Table of Contents](CONTENTS.md) | [AnchorHub User Guide](GUIDE.md) | **AnchorHub Definitions** | [FAQ](FAQ.md) | [About AnchorHub](ABOUT.md) 
 
@@ -45,3 +45,7 @@ Users can specify their own wrapper styles by using the `-w` flag on the `anchor
 ```shell
 $ anchorhub -w "< >" input_directory
 ```
+
+---
+
+[Back to top](#up)

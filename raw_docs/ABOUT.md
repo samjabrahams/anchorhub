@@ -1,8 +1,8 @@
-# About AnchorHub {#about}
+# About AnchorHub {#up}
 
 ---
 
-[Readme](README.md) | [Table of Contents](CONTENTS.md) | [AnchorHub User Guide](GUIDE.md) | [AnchorHub Definitions](DEFINITIONS.md) | [FAQ](FAQ.md) | **About AnchorHub** 
+[Readme](README.md#up) | [Table of Contents](CONTENTS.md#up) | [AnchorHub User Guide](GUIDE.md#up) | [AnchorHub Definitions](DEFINITIONS.md#up) | [FAQ](FAQ.md#up) | **About AnchorHub** 
 
 ---
 
@@ -40,4 +40,4 @@ This is my first published Python code, so please let me know where I messed up 
 
 ---
 
-[Back to top](#about)
+[Back to top](#up)

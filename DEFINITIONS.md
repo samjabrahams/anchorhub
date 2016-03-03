@@ -45,3 +45,7 @@ Users can specify their own wrapper styles by using the `-w` flag on the `anchor
 ```shell
 $ anchorhub -w "< >" input_directory
 ```
+
+---
+
+[Back to top](#terminologydefinitions)

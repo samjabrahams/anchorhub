@@ -1,6 +1,6 @@
-# AnchorHub Table of Contents
+# AnchorHub Table of Contents {#up}
 
-[Readme](README.md) | **Table of Contents** | [AnchorHub User Guide](GUIDE.md) | [AnchorHub Definitions](DEFINITIONS.md) | [FAQ](FAQ.md) | [About AnchorHub](ABOUT.md) 
+[Readme](README.md#up) | **Table of Contents** | [AnchorHub User Guide](GUIDE.md#up) | [AnchorHub Definitions](DEFINITIONS.md#up) | [FAQ](FAQ.md#up) | [About AnchorHub](ABOUT.md#up) 
 
 ## [Readme](README.md#anchorhub)
 
@@ -57,3 +57,7 @@
 * [What about ReStructuredText support?](FAQ.md#rst)
 * [Can you add support for non-GitHub style header anchors?](FAQ.md#anchors)
 * [Why load files into memory instead of just reading from stream?](FAQ.md#memory)
+
+---
+
+[Back to top](#up)
