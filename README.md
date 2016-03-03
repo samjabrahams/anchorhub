@@ -1,22 +1,22 @@
 ![AnchorHub graphic](img/graphic.png)
 
-# AnchorHub 
+# AnchorHub
 
 **AnchorHub** is a command-line tool that makes it easy and intuitive to utilize GitHub's auto-generated anchor tags in your [Markdown](https://daringfireball.net/projects/markdown/) documents, allowing you to create rich, user-friendly documentation in your GitHub repos without having to figure out what those auto-generated tags will be.
 
-## Features 
+## Features
 
-* Easily link to sections of Markdown documents on GitHub
+* Easily use GitHub's automatically generated anchor tags
 * Simple, customizable syntax that just works
-* Works within the entire directory tree automatically
+* Works with single files, a single directory level, or an entire directory tree
 
 ---
 
-[Table of Contents](CONTENTS.md) | [FAQ](FAQ.md) | [About AnchorHub](ABOUT.md) 
+**Readme** | [Table of Contents](CONTENTS.md) | [AnchorHub User Guide](GUIDE.md) | [AnchorHub Definitions](DEFINITIONS.md) | [FAQ](FAQ.md) | [About AnchorHub](ABOUT.md) 
 
 ---
 
-## Installation 
+## Installation
 
 You can install AnchorHub using [pip](https://pip.pypa.io/en/stable/installing/):
 
@@ -24,214 +24,88 @@ You can install AnchorHub using [pip](https://pip.pypa.io/en/stable/installing/)
 $ pip install anchorhub
 ```
 
-## Quick Start Guide 
-
-Inside your Markdown files, define and use AnchorHub tags like the following:
-
-```markdown
-# This is a header that I would like to make an id for {#head}
-[This link points to that header!](#head)
-```
-
-Navigate to the root of the directory tree you'd like to process and type:
+If you're having trouble with pip, you can also install from source:
 
 ```
-$ anchorhub .
+$ git clone https://github.com/samjabrahams/anchorhub.git
+$ cd anchorhub
+$ python setup.py install
 ```
 
-This will output your processed files in a new folder in your current directory, 'anchorhub-out'. The output of AnchorHub on the Markdown written above is this:
+## To-do List
 
-```markdown
-# This is a header that I would like to make an id for
-[This link points to that header!](#this-is-a-header-that-i-would-like-to-make-an-id-for)
-```
-
-# Using AnchorHub 
-
-This section goes over how to write your Markdown files in order to utilize AnchorHub, as well as how to use the command-line interface to AnchorHub.
-
-1. [Defining anchors on header lines](#defining-anchors)
-2. [Using those anchors in links](#link-syntax)
-3. [Processing files with the `anchorhub` command line interface](#anchorhubs-command-line-interface)
-
-## Defining AnchorHub Tags 
-
-Place identifiers with a leading '#' inside of `{ }` wrappers at end of header lines you'd like to link to. For example:
-
-```markdown
-# This is the header I'd like to create an anchor for {#tag}
-```
-
-_Note: You can specify your own style of wrappers if `{ }` braces don't suit your needs. [See below]() for an example._
-
-## Link Syntax 
-
-Write links to your specified anchors as if you had created an HTML element with an `id` or `name` parameter:
-
-```markdown
-In the middle of this sentence, I'd like to link back to [the header specified above](#tag)
-```
-
-AnchorHub automatically automatically works for all files within a directory tree, so if you had a file named 'other.md' with '#ref' defined as an AnchorHub tag, you can link to it from your original file without any additional effort:
-
-```markdown
-Let's link to that [other file's anchor!](other.md#ref)
-```
-
-_Note: Make sure you use AnchorHub on the highest-level directory that you'd like to process. AnchorHub will search in all sub-directories of the input directory, but it will never step backwards. [See below]() for details._
-
-## AnchorHub's Command Line Interface 
-
-### Usage 
-
-```shell
-anchorhub [-h] [-v] [-X] [-e EXTENSIONS [EXTENSIONS ...]] [-w WRAPPER] input [output]
-```
-
-### Input 
-
-The only required argument to `anchorhub` is the desired input root. AnchorHub will walk through all subdirectories within the input and process all Markdown files it finds.
-
-```shell
-$ anchorhub path/to/my/input
-```
-
-### Output 
-
-The second argument, if provided, specifies the desired output directory. By default, AnchorHub will output to `anchorhub-out` within the present working directory. Regardless of where the output is located, the structure of the output directory will match that of the input directory.
-
-```shell
-$ anchorhub input path/to/my/output
-```
-
-
-### Options 
-
-**-h / --help:** Display the terminal help prompt for `anchorhub`
-
-```shell
-$ anchorhub -h
-```
-
-**-v / --version:** Display the installed version of `anchorhub`
-
-```shell
-$ anchorhub -v
-```
-
-**-X / --overwrite:** Instead of outputting to a separate directory, overwrite  the input files
-
-```shell
-$ anchorhub -X ./input
-```
-
-**-e / --extension EXTENSION [EXTENSIONS ...]:** Process files that end with the provided extensions
-
-The default value is `".md"`. You can provide multiple extensions if you have files that use various extensions:
-
-```shell
-$ anchorhub ./input -e .md .markdown .MD 
-```
-
-**-w / --wrapper:** Specify the wrapper syntax for defining AnchorHub tags
-
-The default value is `"{ }"`. Make sure you have a space between your opening and closing patterns and to wrap the whole thing in quotation marks:
-
-```shell
-$ anchorhub ./input -w "[--> <--]"
-```
-
-# Additional Info 
-
-## Examples 
-
-### Single file 
-
-#### Input
-```markdown
-# This is the top of my document! {#top}
-Going to have some more cool text explaining stuff.
-
-Skip to features header with [this link!](#features).
-
-## Here is my feature list! {#features}
-* Gotta have some bullet points!
-* Let's keep it up!
-* This bullet point is here for the rule of three
-
-[Link back to the top!](#top)
-```
-
-#### Output
-
-```markdown
-# This is the top of my document! 
-Going to have some more cool text explaining stuff.
-
-Skip to features header with [this link!](#here-is-my-feature-list).
-
-## Here is my feature list! 
-* Gotta have some bullet points!
-* Let's keep it up!
-* This bullet point is here for the rule of three
-
-[Link back to the top!](#this-is-the-top-of-my-document)
-```
-
-### Multi-file 
-
-AnchorHub automatically looks at the entire directory tree when checking for AnchorHub tag matches, so you can link to other documents in the same fashion. Here's a super simple demonstration below:
-
-#### Input
-
-file1.md
-
-```markdown
-# Some header for this file {#go-here}
-[Link to another file's header](dir/file2.md#awesome)
-```
-
-dir/file2.md
-
-```markdown
-# The awesome header in file2.md {#awesome}
-[Link back to file1.md](../file1.md#go-here)
-```
-
-#### Output
-
-file1.md
-
-```markdown
-# Some header for this file 
-[Link to another file's header](dir/file2.md#the-awesome-header-in-file2md)
-```
-
-dir/file2.md
-
-```markdown
-# The awesome header in file2.md 
-[Link back to file1.md](../file1.md#some-header-for-this-file)
-```
-
- AnchorHub maintains a distinct set of tags for each file, so you can reuse tag names on different pages.
-
-## To-do List 
-
-* Support for reference-style Markdown links
-* Support for Setext ("underlined") style headers
 * Verify cross-platform compatibility (currently only tested on OSX)
-* Proper exception handling
 * Support for ReStructuredText
-* Support for arbitrary generated anchor styles (not just GitHub-style)
-* Clean, refactor, reorganize
+* Define API for using custom anchor generation or 
 * More tests!
 
-## Known Issues 
+## Known Issues
 
-* Should not change text within in-line code (those marked by \` backticks)
+* Should not change text within in-line code blocks (those marked by \` backticks)
 
-## License 
+---
+
+# Quick Start Guide
+
+## 1. Define your tags
+
+Inside your Markdown files, define tags at the end of header lines. By default, the syntax for this is `{#my-tag-here}`:
+
+
+```markdown
+# This is a header that I would like to make a tag for {#tag}
+
+You can also use Setext (underlined) style headers {#setext}
+------------------------------------------------------------
+```
+
+The default is similar to [Pandoc's Markdown header identifiers](http://pandoc.org/README.html#header-identifiers)
+
+## 2. Use the tags as you would regular HTML anchors
+
+Elsewhere, you can use the previously defined tags inlinks to provide a direct path to the header:
+
+```markdown
+[This links back to the header using the AnchorHub tag 'tag'](#tag)
+
+[This one links to the Setext header](#setext)
+```
+
+## 3. Run AnchorHub on your Markdown files
+
+`anchorhub` will parse your Markdown files. You've got a few options for running `anchorhub`: run it on a single file, run it on a single level of a directory, or run it on an entire directory tree.
+
+```
+Single file use:
+$ anchorhub mytags.md
+
+Directory use (single level):
+$ anchorhub .
+
+Directory use (provided directory level and all subdirectories):
+$ anchorhub . -r
+```
+
+This will output your processed files in a new folder in your current directory, 'anchorhub-out/'
+
+## 4. Enjoy your (relatively) hassle-free GitHub anchor links
+ 
+Assuming all of the above Markdown was in a file named 'mytags.md', here is what we'd find inside of 'anchorhub-out/mytags.md':
+
+```markdown
+# This is a header that I would like to make a tag for
+
+You can also use Setext (underlined) style headers
+------------------------------------------------------------
+...
+[This links back to the header using the AnchorHub tag 'tag'](#this-is-a-header-that-i-would-like-to-make-a-tag-for)
+
+[This one links to the Setext header](#you-can-also-use-setext-underlined-style-headers)
+```
+
+---
+
+# License
 
 ```
 Copyright 2016, Sam Abrahams. All rights reserved.
@@ -248,5 +122,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
+
+---
 
 [Back to top](#anchorhub)

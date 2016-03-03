@@ -1,8 +1,8 @@
-# About AnchorHub {#top}
+# About AnchorHub {#about}
 
 ---
 
-[Table of Contents](CONTENTS.md) | [AnchorHub README](README.md) | [FAQ](FAQ.md) 
+[Readme](README.md) | [Table of Contents](CONTENTS.md) | [AnchorHub User Guide](GUIDE.md) | [AnchorHub Definitions](DEFINITIONS.md) | [FAQ](FAQ.md) | **About AnchorHub** 
 
 ---
 
@@ -32,10 +32,12 @@ This is the goal that was probably pushed below others during the programming of
 
 One decision I'm still wrestling with is whether the requirement of having a '#' pound sign as part of any specified wrappers should be hard coded (at present they ARE required). To me, having the pound sign makes the syntax more semantic, and it makes it easier to copy and paste links. On the other hand, it is an extra keystroke for every anchor specified. I turn to the community to see what you think! 
 
-## About the Author {#about}
+## About the Author {#author}
 
 My name is Sam Abrahams, and I created AnchorHub in January 2016. I run a blog called [MemDump](http://www.memdump.co) and work as an animator and programmer in Los Angeles, CA.
 
-This is my first published Python code, so please let me know what best practices I messed up and how to improve my code!
+This is my first published Python code, so please let me know where I messed up and how to improve my code!
 
-[Back to top](#top)
+---
+
+[Back to top](#about)

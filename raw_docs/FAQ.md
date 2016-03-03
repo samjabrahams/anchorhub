@@ -1,8 +1,8 @@
-# AnchorHub FAQ {#top}
+# AnchorHub Preemptively Answered Questions {#faq}
 
 ---
 
-[Table of Contents](CONTENTS.md) | [AnchorHub README](README.md) | [About AnchorHub](ABOUT.md) 
+[Readme](README.md) | [Table of Contents](CONTENTS.md) | [AnchorHub User Guide](GUIDE.md) | [AnchorHub Definitions](DEFINITIONS.md) | **FAQ** | [About AnchorHub](ABOUT.md) 
 
 ---
 
@@ -23,6 +23,12 @@ This is my first dive into creating a Python package, and I discovered that, iro
 
 ## Can You Add Support for Non-GitHub Style Header Anchors? {#anchors}
 
-Definitely! I am planning on defining a simple interface for people to write their own anchor-generation styles, but if there are particular anchor-generation styles (perhaps from other git-hosting sites) that you think would be beneficial to have as a built-in option, feel free to submit an issue or pull-request!
+Definitely! I am planning on defining a interface for people to write their own anchor-generation styles, but if there are particular anchor-generation styles (perhaps from other git-hosting sites) that you think would be beneficial to have as a built-in option, feel free to submit an issue or pull-request!
 
-[Back to top](#top)
+## Why Load Files Into Memory Instead of Just Reading from Stream? {#memory}
+
+The prototype implementation of AnchorHub did read from stream, but it proved to be too inflexible. In order to allow for more possibilities for checking various types of syntax, I decided that reading the entire file into memory and allowing individual parsing functions decide which lines they needed would be best. Since AnchorHub is designed for text files that are human readable, I assume that users won't pass multiple gigabyte files to it.
+
+---
+
+[Back to top](#faq)
