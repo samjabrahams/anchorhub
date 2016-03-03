@@ -9,7 +9,7 @@ This Markdown file is going to use two different types of header formatting.
 
 ## Sample text schtuff [-->#text<--]
 
-In this text, I'm going to link to various anchors within the document. For example, I'm going to link to [the header types](#typ##es) here, and link the [best subheader below](#the-best-subheader-ever) right there.
+In this text, I'm going to link to various anchors within the document. For example, I'm going to link to [the header types](#types-of-header-formats) here, and link the [best subheader below](#the-best-subheader-ever) right there.
 
 ### The best subheader ever
 
@@ -48,7 +48,7 @@ This is the filler text. Lorem ipsum my bum.
 
 ## Duplicate header
 
-I'm going to leave an external link [here](inner_path/test-6.md#duplicate-header-1)
+I'm going to leave an external link [here](inner_path/test-6.md#du3)
 
 ## Duplicate header
 
@@ -60,7 +60,7 @@ I'm going to leave an external link [here](inner_path/test-6.md#duplicate-header
 
 ## Duplicate header
 
-Let's put a several [external links](inner_path/test-6.md#top) on this one line. Even though there are a bunch of [links](inner_path/test-6.md#du1) all together, the script should handle them all fine. But will it [work?](inner_path/test-6.md#the-best-subheader-ever)
+Let's put a several [external links](inner_path/test-6.md#top) on this one line. Even though there are a bunch of [links](inner_path/test-6.md#du1) all together, the script should handle them all fine. But will it [work?](inner_path/test-6.md#sub)
 
 ## Duplicate header
 

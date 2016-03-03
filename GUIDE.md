@@ -1,6 +1,6 @@
 # AnchorHub User Guide
 
-[Readme](README.md#up) | [Table of Contents](CONTENTS.md#up) | **AnchorHub User Guide** | [AnchorHub Definitions](DEFINITIONS.md#up) | [FAQ](FAQ.md#up) | [About AnchorHub](ABOUT.md#about-anchorhub) 
+[Readme](README.md#anchorhub) | [Table of Contents](CONTENTS.md#anchorhub-table-of-contents) | **AnchorHub User Guide** | [AnchorHub Definitions](DEFINITIONS.md#terminologydefinitions) | [FAQ](FAQ.md#anchorhub-preemptively-answered-questions) | [About AnchorHub](ABOUT.md#about-anchorhub) 
 
 This guide goes over how to write your Markdown files in order to utilize AnchorHub, as well as how to use the command-line interface to AnchorHub.
 

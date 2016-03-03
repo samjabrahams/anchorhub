@@ -1,6 +1,6 @@
 # AnchorHub Table of Contents
 
-[Readme](README.md#up) | **Table of Contents** | [AnchorHub User Guide](GUIDE.md#up) | [AnchorHub Definitions](DEFINITIONS.md#up) | [FAQ](FAQ.md#up) | [About AnchorHub](ABOUT.md#about-anchorhub) 
+[Readme](README.md#anchorhub) | **Table of Contents** | [AnchorHub User Guide](GUIDE.md#anchorhub-user-guide) | [AnchorHub Definitions](DEFINITIONS.md#terminologydefinitions) | [FAQ](FAQ.md#anchorhub-preemptively-answered-questions) | [About AnchorHub](ABOUT.md#about-anchorhub) 
 
 ## [Readme](README.md#anchorhub)
 

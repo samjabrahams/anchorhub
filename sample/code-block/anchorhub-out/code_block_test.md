@@ -14,4 +14,4 @@ The link on this line [should change](#here-is-the-sample-header)
 
 ```
 
-[But this should!](#link)
+[But this should!](#here-is-the-sample-header)

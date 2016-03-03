@@ -9,7 +9,7 @@ This Markdown file is going to use two different types of header formatting.
 
 ## Sample text schtuff [-->#text<--]
 
-In this text, I'm going to link to various anchors within the document. For example, I'm going to link to [the header types](#types) here, and link the [best subheader below](#the-best-subheader-ever) right there.
+In this text, I'm going to link to various anchors within the document. For example, I'm going to link to [the header types](#types-of-header-formats) here, and link the [best subheader below](#the-best-subheader-ever) right there.
 
 ### The best subheader ever
 

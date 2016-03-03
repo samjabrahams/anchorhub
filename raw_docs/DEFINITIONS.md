@@ -1,6 +1,6 @@
 # Terminology/Definitions {#up}
 
-[Readme](README.md) | [Table of Contents](CONTENTS.md) | [AnchorHub User Guide](GUIDE.md) | **AnchorHub Definitions** | [FAQ](FAQ.md) | [About AnchorHub](ABOUT.md) 
+[Readme](README.md#up) | [Table of Contents](CONTENTS.md#up) | [AnchorHub User Guide](GUIDE.md#up) | **AnchorHub Definitions** | [FAQ](FAQ.md#up) | [About AnchorHub](ABOUT.md#up) 
 
 ## AnchorHub tags {#tags}
 

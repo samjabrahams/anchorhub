@@ -2,7 +2,7 @@
 
 ---
 
-[Readme](README.md#up) | [Table of Contents](CONTENTS.md#up) | [AnchorHub User Guide](GUIDE.md#up) | [AnchorHub Definitions](DEFINITIONS.md#up) | [FAQ](FAQ.md#anchorhub-preemptively-answered-questions) | **About AnchorHub** 
+[Readme](README.md#anchorhub) | [Table of Contents](CONTENTS.md#anchorhub-table-of-contents) | [AnchorHub User Guide](GUIDE.md#anchorhub-user-guide) | [AnchorHub Definitions](DEFINITIONS.md#terminologydefinitions) | [FAQ](FAQ.md#anchorhub-preemptively-answered-questions) | **About AnchorHub** 
 
 ---
 
