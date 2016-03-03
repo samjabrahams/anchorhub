@@ -99,8 +99,8 @@ class Collector(object):
                         tag, convert_me = s.get(lines, i)
                         if tag in file_anchors:
                             # Duplicate tag
-                            file_duplicates.append([tag, i + 1,
-                                                    file_anchors[tag]])
+                            file_duplicates.append((tag, i + 1,
+                                                    file_anchors[tag]))
                         else:
                             anchor = self._converter(convert_me, file_anchors)
                             file_anchors[tag] = anchor
@@ -139,7 +139,7 @@ class Collector(object):
 
     def _reset_switches(self):
         """
-        Sets all switches in the Collecter object to False
+        Sets all switches in the Collector object to False
         """
         for s in self._switches:
             s.force(False)

@@ -23,6 +23,8 @@ def validate(file_paths, opts):
     except ValidationException as e:
         if str(e) == "No files found":
             messages.print_no_files_found(opts)
+        else:
+            print(e)
         sys.exit(0)
 
 
@@ -32,7 +34,7 @@ def _validate(file_paths):
 
     :param file_paths: List of string file paths to test
     :raises ValidationException: if any validation tests fail
-    :return: True
+    :return: True if all validations pass
     """
     if all([is_not_empty(file_paths)]):
         return True

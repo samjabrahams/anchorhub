@@ -8,7 +8,7 @@ import anchorhub.messages as messages
 import anchorhub.normalization.normalize_opts as normalize_opts
 import anchorhub.validation.validate_opts as validate_opts
 import anchorhub.validation.validate_files as validate_files
-from anchorhub.util.getfiles import get_files
+import anchorhub.validation.validate_anchors as validate_anchors
 from anchorhub.builtin.github.collector import make_github_markdown_collector
 from anchorhub.builtin.github.writer import make_github_markdown_writer
 
@@ -41,6 +41,7 @@ def main(argv=None):
     # Collect tag/anchor combinations
     collector = make_github_markdown_collector(opts)
     anchors, duplicate_tags = collector.collect(file_paths)
+    assert validate_anchors.validate(anchors, duplicate_tags, opts)
 
     # Write files using previously found AnchorHub tags and generated anchors
     writer = make_github_markdown_writer(opts)

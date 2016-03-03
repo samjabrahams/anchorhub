@@ -47,6 +47,27 @@ def print_no_files_found(opts):
     print(msg)
 
 
+def print_duplicate_anchor_information(duplicate_tags):
+    """
+    Prints information about duplicate AnchorHub tags found during collection.
+
+    :param duplicate_tags: Dictionary mapping string file path keys to a list of
+        tuples. The tuples contain the following information, in order:
+
+        1. The string AnchorHub tag that was repeated
+        2. The line in the file that the duplicate was found, as a number
+        3. The string generated anchor that first used the repeated tag
+    """
+    print("Duplicate anchors specified within file(s)")
+    print("Please modify your code to remove duplicates.\r\n")
+    for file_path in duplicate_tags:
+        print("File: " + file_path)
+        for line_info in duplicate_tags[file_path]:
+            print("\tLine " + str(line_info[1]) +     # Line number
+                  "\t#" + line_info[0] +            # Repeated AnchorHub tag
+                  " :\t" + line_info[2])            # Previously created anchor
+
+
 def print_modified_files(opts, anchors):
     """
     Prints out which files were modified amongst those looked at
