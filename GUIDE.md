@@ -184,6 +184,10 @@ $ anchorhub input -w "[--> <--]"
 
 You can find a bunch of pre-written sample files in the [sample](sample) subdirectory. Below, I'll go over some of the examples and describe features of AnchorHub along the way.
 
+* [Single file example](#single-file)
+* [Multi-file example](#multi-file)
+* [Multi-file with subdirectories example](#including-subdirectories)
+
 ---
 
 ### Single file
@@ -272,6 +276,50 @@ anchorhub-out/file2.md
 ```markdown
 # The awesome header in file2.md 
 [Link back to file1.md](file1.md#some-header-for-this-file)
+```
+
+---
+
+### Including subdirectories
+
+If you have a more complex document structure than just a flat directory, you can easily parse your entire file hierarchy by passing in the `-r` flag on the command line. This tells AnchorHub to look in all subdirectories, recursively, for files to process. You can then use AnchorHub tags with relative links naturally:
+
+#### Input
+
+file1.md
+
+```markdown
+# Some header for this file {#go-here}
+[Link to another file's header](dir/file2.md#awesome)
+```
+
+dir/file2.md
+
+```markdown
+# The awesome header in file2.md {#awesome}
+[Link back to file1.md](../file1.md#go-here)
+```
+
+#### Command line
+
+```
+$ anchorhub . -r
+```
+
+#### Output
+
+anchorhub-out/file1.md
+
+```markdown
+# Some header for this file 
+[Link to another file's header](dir/file2.md#the-awesome-header-in-file2md)
+```
+
+anchorhub-out/dir/file2.md
+
+```markdown
+# The awesome header in file2.md 
+[Link back to file1.md](../file1.md#some-header-for-this-file)
 ```
 
 ---
