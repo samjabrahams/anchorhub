@@ -36,7 +36,7 @@ $ python setup.py install
 
 ## To-do List
 
-* Verify cross-platform compatibility (currently only tested on OSX)
+* Verify cross-platform compatibility (currently only tested on OSX and Raspbian)
 * Support for ReStructuredText
 * Define API for using custom anchor generation or 
 * More tests!
