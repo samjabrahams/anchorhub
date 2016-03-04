@@ -4,6 +4,8 @@
 
 **AnchorHub** is a command-line tool that makes it easy and intuitive to utilize GitHub's auto-generated anchor tags in your [Markdown](https://daringfireball.net/projects/markdown/) documents, allowing you to create rich, user-friendly documentation in your GitHub repos without having to figure out what those auto-generated tags will be.
 
+![AnchorHub demo animation](img/animation.gif)
+
 ## Features {#features}
 
 * Easily use GitHub's automatically generated anchor tags
