@@ -107,6 +107,12 @@ You can also use Setext (underlined) style headers
 
 ---
 
+# Contribution {#contrib}
+
+Please feel free to make any and all suggestions or pull requests to help improve the software. This is my first public Python module, and I'll accept any constructive feedback graciously.
+
+---
+
 # License {#license}
 
 ```

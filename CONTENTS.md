@@ -14,6 +14,7 @@
 	2. [Use the tags as you would regular HTML anchors](README.md#2-use-the-tags-as-you-would-regular-html-anchors)
 	3. [Run AnchorHub on your Markdown files](README.md#3-run-anchorhub-on-your-markdown-files)
 	4. [Enjoy your (relatively) hassle-free GitHub anchor links](README.md#4-enjoy-your-relatively-hassle-free-github-anchor-links)
+* [Contribution](README.md#contribution)
 * [License](README.md#license)
 
 
